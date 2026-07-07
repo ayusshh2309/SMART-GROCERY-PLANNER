@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Categories</title>
+    <style>
+      :root {
+        --bg: #07120d;
+        --panel: #101c16;
+        --panel-2: #13231b;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f4fff7;
+        --muted: #8ea79a;
+        --accent: #2f9d5c;
+        --accent-2: #37b66a;
+        --accent-soft: rgba(47, 157, 92, 0.18);
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+        background: radial-gradient(
+          circle at top left,
+          #11261a 0%,
+          var(--bg) 45%,
+          #060b08 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: rgba(7, 15, 10, 0.95);
+        border-right: 1px solid var(--border);
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18);
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--muted);
+        transition: all 0.2s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background: var(--accent-soft);
+        color: var(--text);
+        transform: translateX(2px);
+      }
+
+      .sidebar-card {
+        margin-top: auto;
+        padding: 16px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(47, 157, 92, 0.2),
+          rgba(12, 24, 18, 0.85)
+        );
+        border: 1px solid rgba(47, 157, 92, 0.22);
+      }
+
+      .main {
+        padding: 24px 28px 36px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .page-title h1 {
+        margin: 0 0 5px;
+        font-size: 1.7rem;
+      }
+
+      .page-title p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .topbar-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: white;
+        box-shadow: 0 10px 24px rgba(47, 157, 92, 0.25);
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .search-box {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 12px 14px 12px 42px;
+        background: var(--panel);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        outline: none;
+      }
+
+      .search-box svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+
+      .stat-card {
+        background: linear-gradient(
+          145deg,
+          rgba(16, 28, 22, 0.98),
+          rgba(12, 22, 17, 0.98)
+        );
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .stat-card .label {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+      }
+
+      .stat-card .value {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+
+      .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .category-card {
+        background: linear-gradient(
+          145deg,
+          rgba(16, 28, 22, 0.96),
+          rgba(10, 20, 15, 0.98)
+        );
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .category-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(47, 157, 92, 0.35);
+        box-shadow: 0 20px 32px rgba(0, 0, 0, 0.32);
+      }
+
+      .category-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .icon-badge {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        font-size: 1.25rem;
+        background: rgba(47, 157, 92, 0.16);
+      }
+
+      .category-name {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin: 0 0 6px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .stats-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 12px 0 16px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        border: none;
+        padding: 8px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .action-btn:hover {
+        background: rgba(47, 157, 92, 0.18);
+      }
+
+      .action-btn.delete:hover {
+        background: rgba(194, 74, 60, 0.16);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        z-index: 40;
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(520px, 100%);
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .modal-card h3 {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .field input {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #0e1a13;
+        color: var(--text);
+        outline: none;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      @media (max-width: 840px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .main {
+          padding: 18px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">🛒</div>
+          <div>Smart Grocery</div>
+        </div>
+
+        <nav class="nav-links">
+          <a class="nav-link" href="dashboard.html">🏠 Dashboard</a>
+          <a class="nav-link" href="pantry.html">🧺 Pantry</a>
+          <a class="nav-link" href="shooping_list.html">🛒 Shopping List</a>
+          <a class="nav-link" href="expenses.html">💰 Expenses</a>
+          <a class="nav-link" href="recipes.html">📦 Recipes</a>
+          <a class="nav-link active" href="categories.html">📂 Categories</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <strong>Stay organized</strong>
+          <p style="color: var(--muted); margin: 6px 0 0">
+            Keep your pantry grouped neatly and discover savings faster.
+          </p>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div class="page-title">
+            <h1>Categories</h1>
+            <p>Organize your grocery items by category with smart insights.</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn btn-primary" id="openModalBtn">
+              ＋ Add Category
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-box">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search categories..."
+            />
+          </div>
+        </div>
+
+        <section class="stats-grid" id="statsGrid"></section>
+
+        <section class="categories-grid" id="categoriesGrid"></section>
+      </main>
+    </div>
+
+    <div class="modal" id="categoryModal">
+      <div class="modal-card">
+        <h3 id="modalTitle">Add Category</h3>
+        <form id="categoryForm">
+          <div class="field">
+            <label for="categoryName">Category Name</label>
+            <input
+              id="categoryName"
+              name="categoryName"
+              maxlength="24"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="categoryIcon">Category Icon</label>
+            <input
+              id="categoryIcon"
+              name="categoryIcon"
+              placeholder="🥬"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="categoryItems">Number of Items</label>
+            <input
+              id="categoryItems"
+              name="categoryItems"
+              type="number"
+              min="0"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="categoryValue">Total Value</label>
+            <input
+              id="categoryValue"
+              name="categoryValue"
+              placeholder="$120.00"
+              required
+            />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn" id="cancelModalBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">Save Category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const initialCategories = [
+        { id: 1, name: "Vegetables", icon: "🥬", items: 24, value: "$72.00" },
+        { id: 2, name: "Dairy", icon: "🥛", items: 12, value: "$48.00" },
+        { id: 3, name: "Meat", icon: "🍖", items: 9, value: "$63.00" },
+        { id: 4, name: "Fruits", icon: "🍎", items: 18, value: "$54.00" },
+        { id: 5, name: "Bakery", icon: "🥖", items: 7, value: "$29.00" },
+        { id: 6, name: "Snacks", icon: "🍫", items: 14, value: "$41.00" },
+        { id: 7, name: "Beverages", icon: "🥤", items: 11, value: "$36.00" },
+        { id: 8, name: "Frozen Food", icon: "🧊", items: 6, value: "$33.00" },
+      ];
+
+      let categories = [...initialCategories];
+      let editingId = null;
+      let searchTerm = "";
+
+      const categoriesGrid = document.getElementById("categoriesGrid");
+      const statsGrid = document.getElementById("statsGrid");
+      const searchInput = document.getElementById("searchInput");
+      const modal = document.getElementById("categoryModal");
+      const form = document.getElementById("categoryForm");
+      const modalTitle = document.getElementById("modalTitle");
+      const openModalBtn = document.getElementById("openModalBtn");
+      const cancelModalBtn = document.getElementById("cancelModalBtn");
+
+      function getFilteredCategories() {
+        const query = searchTerm.trim().toLowerCase();
+        if (!query) return categories;
+        return categories.filter((category) =>
+          category.name.toLowerCase().includes(query),
+        );
+      }
+
+      function renderStats() {
+        const totalCategories = categories.length;
+        const totalItems = categories.reduce(
+          (sum, item) => sum + Number(item.items || 0),
+          0,
+        );
+        const largest = [...categories].sort(
+          (a, b) => (b.items || 0) - (a.items || 0),
+        )[0];
+        const emptyCount = categories.filter(
+          (item) => Number(item.items || 0) === 0,
+        ).length;
+
+        const stats = [
+          { label: "Total Categories", value: totalCategories },
+          { label: "Total Pantry Items", value: totalItems },
+          { label: "Largest Category", value: largest ? largest.name : "—" },
+          { label: "Empty Categories", value: emptyCount },
+        ];
+
+        statsGrid.innerHTML = stats
+          .map(
+            (stat) => `
+              <div class="stat-card">
+                <div class="label">${stat.label}</div>
+                <div class="value">${stat.value}</div>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      function renderCategories() {
+        const visible = getFilteredCategories();
+        if (!visible.length) {
+          categoriesGrid.innerHTML = `<div class="stat-card">No categories match your search.</div>`;
+          return;
+        }
+
+        categoriesGrid.innerHTML = visible
+          .map(
+            (category) => `
+              <article class="category-card">
+                <div class="category-top">
+                  <div class="icon-badge">${category.icon}</div>
+                  <div class="card-actions">
+                    <button class="action-btn" data-action="edit" data-id="${category.id}">✎</button>
+                    <button class="action-btn delete" data-action="delete" data-id="${category.id}">🗑</button>
+                  </div>
+                </div>
+                <h3 class="category-name">${category.name}</h3>
+                <div class="meta">${category.items} items</div>
+                <div class="stats-row">
+                  <span>Total value</span>
+                  <strong>${category.value}</strong>
+                </div>
+                <div class="card-actions">
+                  <button class="action-btn" data-action="view" data-id="${category.id}">View</button>
+                </div>
+              </article>
+            `,
+          )
+          .join("");
+      }
+
+      function openModal() {
+        modal.classList.add("open");
+      }
+
+      function closeModal() {
+        modal.classList.remove("open");
+        form.reset();
+        editingId = null;
+        modalTitle.textContent = "Add Category";
+      }
+
+      function editCategory(id) {
+        const category = categories.find((item) => item.id === id);
+        if (!category) return;
+        editingId = id;
+        modalTitle.textContent = "Edit Category";
+        document.getElementById("categoryName").value = category.name;
+        document.getElementById("categoryIcon").value = category.icon;
+        document.getElementById("categoryItems").value = category.items;
+        document.getElementById("categoryValue").value = category.value;
+        openModal();
+      }
+
+      function deleteCategory(id) {
+        const category = categories.find((item) => item.id === id);
+        if (!category) return;
+        const shouldDelete = confirm(`Delete ${category.name}?`);
+        if (!shouldDelete) return;
+        categories = categories.filter((item) => item.id !== id);
+        render();
+      }
+
+      function render() {
+        renderStats();
+        renderCategories();
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const payload = {
+          name: String(formData.get("categoryName") || "").trim(),
+          icon: String(formData.get("categoryIcon") || "📦").trim(),
+          items: Number(formData.get("categoryItems") || 0),
+          value: String(formData.get("categoryValue") || "$0.00").trim(),
+        };
+
+        if (!payload.name) return;
+
+        if (editingId) {
+          categories = categories.map((item) =>
+            item.id === editingId ? { ...item, ...payload } : item,
+          );
+        } else {
+          const newCategory = {
+            id: Date.now(),
+            ...payload,
+          };
+          categories = [newCategory, ...categories];
+        }
+
+        closeModal();
+        render();
+      });
+
+      searchInput.addEventListener("input", (event) => {
+        searchTerm = event.target.value;
+        renderCategories();
+      });
+
+      categoriesGrid.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const action = button.getAttribute("data-action");
+        const id = Number(button.getAttribute("data-id"));
+
+        if (action === "edit") {
+          editCategory(id);
+        } else if (action === "delete") {
+          deleteCategory(id);
+        } else if (action === "view") {
+          const category = categories.find((item) => item.id === id);
+          if (category) {
+            alert(`Viewing ${category.name}`);
+          }
+        }
+      });
+
+      openModalBtn.addEventListener("click", openModal);
+      cancelModalBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeModal();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
