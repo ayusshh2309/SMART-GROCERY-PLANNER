@@ -38,8 +38,61 @@ const dashboardData = {
   ]
 };
 
+function getStoredUser() {
+  try {
+    return JSON.parse(localStorage.getItem('smartGroceryUser'));
+  } catch (error) {
+    return null;
+  }
+}
+
+function applyUserSession() {
+  const user = getStoredUser();
+  if (!user) {
+    window.location.href = '../login.html';
+    return;
+  }
+
+  const greeting = document.getElementById('dashboardGreeting');
+  const sub = document.getElementById('dashboardSub');
+  const nameEl = document.getElementById('profileName');
+  const avatarEl = document.getElementById('profileAvatar');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  if (greeting) {
+    const firstName = user.name?.split(' ')[0] || 'there';
+    greeting.textContent = `Good morning, ${firstName}! 👋`;
+  }
+
+  if (sub) {
+    sub.textContent = `Here is what is happening with your groceries today, ${user.name || 'friend'}.`;
+  }
+
+  if (nameEl) {
+    nameEl.textContent = user.name || 'Member';
+  }
+
+  if (avatarEl) {
+    const initials = (user.name || 'MG')
+      .split(' ')
+      .map((part) => part[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+    avatarEl.textContent = initials;
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('smartGroceryUser');
+      window.location.href = '../index.html';
+    });
+  }
+}
+
 function renderStats() {
   const container = document.getElementById('statsRow');
+  if (!container) return;
   container.innerHTML = '';
 
   dashboardData.stats.forEach((card) => {
@@ -78,7 +131,7 @@ function drawLineChart() {
   const height = canvas.clientHeight;
   canvas.width = width * window.devicePixelRatio;
   canvas.height = height * window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
   ctx.clearRect(0, 0, width, height);
 
   const maxValue = Math.max(...values) * 1.06;
@@ -149,7 +202,7 @@ function drawDonutChart() {
   const height = canvas.clientHeight;
   canvas.width = width * window.devicePixelRatio;
   canvas.height = height * window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
   ctx.clearRect(0, 0, width, height);
 
   const total = categories.reduce((sum, item) => sum + item.value, 0);
@@ -303,6 +356,7 @@ function handleResize() {
 }
 
 function initDashboard() {
+  applyUserSession();
   renderStats();
   renderListItems();
   drawLineChart();

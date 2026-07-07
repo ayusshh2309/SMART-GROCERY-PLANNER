@@ -70,8 +70,10 @@
         <div class="topbar">
           <div class="topbar-left">
             <div class="greeting">
-              <h1>Good morning, Ayush! <span>👋</span></h1>
-              <p>Here's what's happening with your groceries today.</p>
+              <h1 id="dashboardGreeting">Good morning!</h1>
+              <p id="dashboardSub">
+                Here's what's happening with your groceries today.
+              </p>
             </div>
           </div>
           <div class="topbar-right">
@@ -95,14 +97,19 @@
                 placeholder="Search for items, categories..."
               />
             </div>
-            <button class="icon-btn" title="Toggle theme">🌙</button>
-            <button class="icon-btn notification-btn" title="Notifications">
+            <button class="icon-btn-round" title="Toggle theme">🌙</button>
+            <button
+              class="icon-btn-round notification-btn"
+              title="Notifications"
+            >
               🔔<span class="badge">3</span>
             </button>
             <div class="profile">
-              <div class="avatar">AK</div>
-              <div class="profile-name">Ayush Kumar</div>
-              <span class="chevron">▾</span>
+              <div class="av" id="profileAvatar">AK</div>
+              <div class="nm" id="profileName">Member</div>
+              <button class="logout-btn" id="logoutBtn" type="button">
+                Logout
+              </button>
             </div>
           </div>
         </div>

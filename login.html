@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Smart Grocery Planner</title>
+    <meta
+      name="description"
+      content="Sign in to access your personalized grocery dashboard."
+    />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">🛒</span>
+          <span>Smart Grocery Planner</span>
+        </a>
+        <a class="text-link" href="index.html">Back home</a>
+      </header>
+
+      <main class="auth-layout">
+        <section class="info-panel">
+          <p class="eyebrow">Personalized access</p>
+          <h1>Log in and turn planning into a calm routine.</h1>
+          <p>
+            Your account keeps your pantry insights, shopping list, and savings
+            in one place, so every visit to the dashboard feels tailored.
+          </p>
+          <ul>
+            <li>Track pantry stock in real time</li>
+            <li>See expiring items before they go to waste</li>
+            <li>Use your personal dashboard with a polished experience</li>
+          </ul>
+        </section>
+
+        <section class="form-panel">
+          <form id="loginForm" class="form-card">
+            <h2>Welcome back</h2>
+            <p class="form-copy">Sign in to continue to your dashboard.</p>
+
+            <label class="field">
+              <span>Name</span>
+              <input
+                id="nameInput"
+                name="name"
+                type="text"
+                required
+                placeholder="Enter your name"
+              />
+            </label>
+
+            <label class="field">
+              <span>Email</span>
+              <input
+                id="emailInput"
+                name="email"
+                type="email"
+                required
+                placeholder="you@example.com"
+              />
+            </label>
+
+            <label class="field">
+              <span>Password</span>
+              <input
+                id="passwordInput"
+                name="password"
+                type="password"
+                required
+                minlength="4"
+                placeholder="At least 4 characters"
+              />
+            </label>
+
+            <button type="submit" class="submit-btn">Log in</button>
+            <p id="formMessage" class="message">
+              Use any details you like — this demo stores them locally for a
+              seamless experience.
+            </p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner</title>
+    <meta
+      name="description"
+      content="A modern grocery planner that helps you track pantry items, avoid waste, and save more."
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">🛒</span>
+          <span>Smart Grocery Planner</span>
+        </a>
+        <nav class="top-links">
+          <a href="#features">Features</a>
+          <a href="login.html" id="loginNavLink">Login</a>
+        </nav>
+      </header>
+
+      <main class="hero">
+        <section class="hero-copy">
+          <p class="eyebrow">Smarter shopping, less food waste</p>
+          <h1>Plan the week, save time, and shop with confidence.</h1>
+          <p class="lead">
+            Track pantry stock, monitor expiring items, and keep your household
+            budget in sync with a dashboard that updates as life changes.
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="login.html">Log in</a>
+            <a class="btn secondary" href="frontend/dashboard.html"
+              >Open dashboard</a
+            >
+          </div>
+          <div class="status-pill" id="loginStatusText">
+            Start by signing in to personalize your experience.
+          </div>
+        </section>
+
+        <section class="hero-card" aria-label="Dashboard preview">
+          <div class="card-header">
+            <div>
+              <p class="card-label">This week</p>
+              <h2 id="heroGreeting">Hello there</h2>
+            </div>
+            <div class="mini-badge" id="currentDate">Today</div>
+          </div>
+          <div class="preview-stats">
+            <div class="preview-stat">
+              <strong>12</strong>
+              <span>Items in pantry</span>
+            </div>
+            <div class="preview-stat">
+              <strong>3</strong>
+              <span>Expiring soon</span>
+            </div>
+            <div class="preview-stat">
+              <strong>₹4.2k</strong>
+              <span>Monthly spend</span>
+            </div>
+          </div>
+          <div class="preview-list">
+            <div class="preview-item">
+              <span>🥛</span>
+              <div>
+                <strong>Milk</strong>
+                <p>Expires tomorrow</p>
+              </div>
+            </div>
+            <div class="preview-item">
+              <span>🍅</span>
+              <div>
+                <strong>Tomatoes</strong>
+                <p>Low stock</p>
+              </div>
+            </div>
+            <div class="preview-item">
+              <span>🛒</span>
+              <div>
+                <strong>Weekly plan</strong>
+                <p>Ready to review</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <section class="features" id="features">
+        <article class="feature-card">
+          <h3>Pantry intelligence</h3>
+          <p>Know what is running low before you need to buy it.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Waste prevention</h3>
+          <p>Catch expiring items early and build better shopping habits.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Budget clarity</h3>
+          <p>See monthly spending and stay on top of your household goals.</p>
+        </article>
+      </section>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
