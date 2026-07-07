@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+          </div>
+          <div class="name">Smart Grocery<span>Planner</span></div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active">
+            <span class="icon">🏠</span>Dashboard
+          </button>
+          <button class="nav-item"><span class="icon">🧺</span>Pantry</button>
+          <button class="nav-item">
+            <span class="icon">🛒</span>Shopping List
+          </button>
+          <button class="nav-item"><span class="icon">💰</span>Expenses</button>
+          <button class="nav-item">
+            <span class="icon">📦</span>Categories
+          </button>
+          <button class="nav-item">
+            <span class="icon">📊</span>Analytics
+          </button>
+          <button class="nav-item">
+            <span class="icon">🔔</span>Notifications
+          </button>
+          <button class="nav-item"><span class="icon">👤</span>Profile</button>
+          <button class="nav-item"><span class="icon">⚙️</span>Settings</button>
+          <button class="nav-item">
+            <span class="icon">❓</span>Help & Support
+          </button>
+        </nav>
+
+        <div class="upsell">
+          <div class="crown"><span>👑</span>Go premium</div>
+          <p>Unlock AI features, smart recipes and price comparisons.</p>
+          <button
+            class="upgrade-btn"
+            onclick="alert('Would open upgrade flow')"
+          >
+            Upgrade now
+          </button>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div class="topbar-left">
+            <div class="greeting">
+              <h1>Good morning, Ayush! <span>👋</span></h1>
+              <p>Here's what's happening with your groceries today.</p>
+            </div>
+          </div>
+          <div class="topbar-right">
+            <div class="search">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                id="dashboardSearch"
+                type="text"
+                placeholder="Search for items, categories..."
+              />
+            </div>
+            <button class="icon-btn" title="Toggle theme">🌙</button>
+            <button class="icon-btn notification-btn" title="Notifications">
+              🔔<span class="badge">3</span>
+            </button>
+            <div class="profile">
+              <div class="avatar">AK</div>
+              <div class="profile-name">Ayush Kumar</div>
+              <span class="chevron">▾</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats" id="statsRow"></div>
+
+        <div class="charts">
+          <section class="panel panel-chart">
+            <div class="panel-head">
+              <h2>Monthly expense overview</h2>
+              <select class="select" id="chartPeriod">
+                <option>This month</option>
+                <option>Last 6 months</option>
+              </select>
+            </div>
+            <div class="chart-wrap"><canvas id="lineChartCanvas"></canvas></div>
+          </section>
+          <section class="panel panel-chart">
+            <div class="panel-head">
+              <h2>Category-wise expense</h2>
+              <select class="select" id="categoryPeriod">
+                <option>This month</option>
+              </select>
+            </div>
+            <div class="donut-wrap">
+              <div class="donut-canvas-box">
+                <canvas id="donutChartCanvas"></canvas>
+                <div class="donut-center">₹4.2k</div>
+              </div>
+              <div class="legend" id="legendList"></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="lists">
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Expiring soon</h2>
+              <button
+                class="view-all"
+                onclick="alert('Open expiring item list')"
+              >
+                View all
+              </button>
+            </div>
+            <div id="expiringList"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h2>Low stock items</h2>
+              <button class="view-all" onclick="alert('Open low stock items')">
+                View all
+              </button>
+            </div>
+            <div id="lowStockList"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h2>Recent activities</h2></div>
+            <div id="activityList"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
