@@ -6,35 +6,40 @@
     <title>Smart Grocery Planner — Dashboard</title>
     <style>
       :root {
-        --bg: #f4f6f2;
-        --paper: #ffffff;
-        --ink: #1b261e;
-        --ink-soft: #677065;
-        --line: #e4e9e0;
+        --bg: #07110c;
+        --paper: #0f1712;
+        --ink: #f3f8f4;
+        --ink-soft: #8da393;
+        --line: rgba(122, 164, 132, 0.2);
 
-        --sidebar: #142019;
-        --sidebar-text: #afc0b2;
-        --sidebar-active: #22372a;
+        --sidebar: #050a08;
+        --sidebar-text: #8da393;
+        --sidebar-active: #163423;
 
-        --herb: #2f7d4f;
-        --herb-light: #e3f2e7;
-        --amber: #c9821f;
-        --amber-light: #fbefdc;
-        --coral: #c24a3c;
-        --coral-light: #fbe7e3;
-        --blue: #3768c2;
-        --blue-light: #e7edfa;
-        --plum: #7355b0;
-        --plum-light: #efe8fa;
+        --herb: #2fd36a;
+        --herb-light: rgba(47, 211, 106, 0.16);
+        --amber: #f0b04b;
+        --amber-light: rgba(240, 176, 75, 0.16);
+        --coral: #ff6b6b;
+        --coral-light: rgba(255, 107, 107, 0.16);
+        --blue: #5aa3ff;
+        --blue-light: rgba(90, 163, 255, 0.16);
+        --plum: #8c7ef5;
+        --plum-light: rgba(140, 126, 245, 0.16);
 
-        --radius: 14px;
+        --radius: 16px;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        background: var(--bg);
+        background: radial-gradient(
+          circle at top left,
+          #0f1d14 0%,
+          var(--bg) 45%,
+          #050806 100%
+        );
         color: var(--ink);
         font-family:
           ui-sans-serif,
@@ -132,6 +137,7 @@
         background: none;
         text-align: left;
         width: 100%;
+        text-decoration: none;
       }
       .nav-item svg {
         flex-shrink: 0;
@@ -569,28 +575,21 @@
         </div>
 
         <nav class="sidebar-nav">
-          <button class="nav-item active">
+          <a class="nav-item active" href="dashboard.html">
             <span class="icon">🏠</span>Dashboard
-          </button>
-          <button class="nav-item"><span class="icon">🧺</span>Pantry</button>
-          <button class="nav-item">
+          </a>
+          <a class="nav-item" href="pantry.html"
+            ><span class="icon">🧺</span>Pantry</a
+          >
+          <a class="nav-item" href="shooping_list.html">
             <span class="icon">🛒</span>Shopping List
-          </button>
-          <button class="nav-item"><span class="icon">💰</span>Expenses</button>
-          <button class="nav-item">
-            <span class="icon">📦</span>Categories
-          </button>
-          <button class="nav-item">
-            <span class="icon">📊</span>Analytics
-          </button>
-          <button class="nav-item">
-            <span class="icon">🔔</span>Notifications
-          </button>
-          <button class="nav-item"><span class="icon">👤</span>Profile</button>
-          <button class="nav-item"><span class="icon">⚙️</span>Settings</button>
-          <button class="nav-item">
-            <span class="icon">❓</span>Help & Support
-          </button>
+          </a>
+          <a class="nav-item" href="expenses.html"
+            ><span class="icon">💰</span>Expenses</a
+          >
+          <a class="nav-item" href="recipes.html">
+            <span class="icon">📦</span>Recipes
+          </a>
         </nav>
 
         <div class="upsell">
@@ -860,34 +859,30 @@
         }
       }
 
-      function applyUserSession() {
-        const user = getStoredUser();
-        if (!user) {
-          window.location.href = "../login.html";
-          return;
-        }
+      const greeting = document.getElementById("dashboardGreeting");
+      const sub = document.getElementById("dashboardSub");
+      const nameEl = document.getElementById("profileName");
+      const avatarEl = document.getElementById("profileAvatar");
+      const logoutBtn = document.getElementById("logoutBtn");
 
-        const greeting = document.getElementById("dashboardGreeting");
-        const sub = document.getElementById("dashboardSub");
-        const nameEl = document.getElementById("profileName");
-        const avatarEl = document.getElementById("profileAvatar");
-        const logoutBtn = document.getElementById("logoutBtn");
+      function applyUserSession() {
+        const currentUser = getStoredUser();
 
         if (greeting) {
-          const firstName = user.name?.split(" ")[0] || "there";
+          const firstName = currentUser?.name?.split(" ")[0] || "there";
           greeting.textContent = `Good morning, ${firstName}! 👋`;
         }
 
         if (sub) {
-          sub.textContent = `Here is what is happening with your groceries today, ${user.name || "friend"}.`;
+          sub.textContent = `Here is what is happening with your groceries today, ${currentUser?.name || "friend"}.`;
         }
 
         if (nameEl) {
-          nameEl.textContent = user.name || "Member";
+          nameEl.textContent = currentUser?.name || "Member";
         }
 
         if (avatarEl) {
-          const initials = (user.name || "MG")
+          const initials = (currentUser?.name || "MG")
             .split(" ")
             .map((part) => part[0])
             .slice(0, 2)
@@ -895,13 +890,13 @@
             .toUpperCase();
           avatarEl.textContent = initials;
         }
+      }
 
-        if (logoutBtn) {
-          logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("smartGroceryUser");
-            window.location.href = "../index.html";
-          });
-        }
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("smartGroceryUser");
+          window.location.href = "../index.html";
+        });
       }
 
       function renderStats() {

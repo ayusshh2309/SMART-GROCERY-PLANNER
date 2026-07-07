@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Recipes</title>
+    <style>
+      :root {
+        --bg: #07110c;
+        --paper: #0f1712;
+        --ink: #f3f8f4;
+        --ink-soft: #8da393;
+        --line: rgba(122, 164, 132, 0.2);
+        --sidebar: #050a08;
+        --sidebar-text: #8da393;
+        --sidebar-active: #163423;
+        --herb: #2fd36a;
+        --herb-light: rgba(47, 211, 106, 0.16);
+        --amber: #f0b04b;
+        --amber-light: rgba(240, 176, 75, 0.16);
+        --coral: #ff6b6b;
+        --coral-light: rgba(255, 107, 107, 0.16);
+        --blue: #5aa3ff;
+        --blue-light: rgba(90, 163, 255, 0.16);
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(
+          circle at top left,
+          #0f1d14 0%,
+          var(--bg) 45%,
+          #050806 100%
+        );
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      button {
+        font-family: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--herb);
+        outline-offset: 2px;
+      }
+
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding: 18px 14px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 6px 22px;
+      }
+      .brand .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand .name {
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .brand .name span {
+        display: block;
+        font-size: 11px;
+        color: var(--sidebar-text);
+        font-weight: 400;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--sidebar-text);
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+        text-decoration: none;
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .nav-item:hover {
+        background: #1b2c22;
+        color: #fff;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+        color: #7cd49b;
+      }
+
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 22px 28px 50px;
+      }
+      .topbar h1 {
+        font-size: 21px;
+      }
+      .topbar .sub {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+        margin-bottom: 18px;
+      }
+
+      .filter-bar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        padding: 8px 14px;
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ink-soft);
+        white-space: nowrap;
+      }
+      .chip.active {
+        background: var(--herb);
+        color: #fff;
+        border-color: var(--herb);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      .recipe-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px;
+        cursor: pointer;
+      }
+      .recipe-card:hover {
+        border-color: var(--herb);
+      }
+      .recipe-thumb {
+        width: 100%;
+        height: 100px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .recipe-card h3 {
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+      .match-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-bottom: 10px;
+      }
+      .match-badge {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+      .match-badge.high {
+        background: var(--herb-light);
+        color: var(--herb);
+      }
+      .match-badge.mid {
+        background: var(--amber-light);
+        color: var(--amber);
+      }
+      .match-badge.low {
+        background: var(--coral-light);
+        color: var(--coral);
+      }
+      .meta-row {
+        display: flex;
+        gap: 12px;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+      }
+      .meta-row span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Detail modal */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(20, 32, 25, 0.45);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+        padding: 20px;
+      }
+      .modal-backdrop.open {
+        display: flex;
+      }
+      .modal {
+        background: var(--paper);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 480px;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 24px;
+      }
+      .modal-close {
+        float: right;
+        background: none;
+        border: none;
+        color: var(--ink-soft);
+        cursor: pointer;
+      }
+      .modal h2 {
+        font-size: 19px;
+        margin-bottom: 4px;
+      }
+      .modal .sub {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin-bottom: 16px;
+      }
+      .ing-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 18px;
+      }
+      .ing-list li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 13.5px;
+      }
+      .ing-list li:last-child {
+        border-bottom: none;
+      }
+      .ing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .ing-dot.have {
+        background: var(--herb);
+      }
+      .ing-dot.missing {
+        background: var(--coral);
+      }
+      .ing-list .missing-label {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--coral);
+        font-weight: 600;
+      }
+      .steps {
+        padding-left: 18px;
+        margin: 0;
+        font-size: 13.5px;
+        line-height: 1.7;
+      }
+      .cta-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .cta-row button {
+        flex: 1;
+        padding: 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 600;
+        border: none;
+      }
+      .btn-primary {
+        background: var(--herb);
+        color: #fff;
+      }
+      .btn-secondary {
+        background: var(--bg);
+        border: 1px solid var(--line) !important;
+        color: var(--ink);
+      }
+
+      @media (max-width: 800px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+          </div>
+          <div class="name">Smart Grocery<span>Planner</span></div>
+        </div>
+        <nav id="navList"></nav>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <h1>Recipes</h1>
+          <div class="sub">
+            Suggestions ranked by what you already have in your pantry.
+          </div>
+        </div>
+
+        <div class="filter-bar" id="filterBar"></div>
+        <div class="grid" id="recipeGrid"></div>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+      // ===================== Nav =====================
+      const navItems = [
+        {
+          label: "Dashboard",
+          href: "dashboard.html",
+          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        },
+        {
+          label: "Pantry",
+          href: "pantry.html",
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0-2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        },
+        {
+          label: "Shopping list",
+          href: "shooping_list.html",
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          label: "Expenses",
+          href: "expenses.html",
+          icon: '<path d="M12 1v22"/><path d="M17 5H9.5A3.5 3.5 0 0 0 9.5 12H15a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        {
+          label: "Recipes",
+          active: true,
+          href: "recipes.html",
+          icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+        },
+      ];
+      document.getElementById("navList").innerHTML = navItems
+        .map(
+          (n) => `
+    <a class="nav-item ${n.active ? "active" : ""}" href="${n.href}">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
+      ${n.label}
+    </a>`,
+        )
+        .join("");
+
+      // ===================== Mock data =====================
+      const recipes = [
+        {
+          id: 1,
+          title: "Spinach & tomato shakshuka",
+          time: "25 min",
+          tag: "expiring",
+          color: "#E3F2E7",
+          emoji: "🍳",
+          ingredients: [
+            { name: "Tomatoes", have: true },
+            { name: "Spinach", have: true },
+            { name: "Eggs", have: true },
+            { name: "Onion", have: true },
+            { name: "Cumin", have: false },
+            { name: "Feta cheese", have: false },
+            { name: "Bread", have: true },
+          ],
+          steps: [
+            "Sauté onions until soft.",
+            "Add tomatoes and spinach, simmer 10 min.",
+            "Crack eggs into the sauce, cover and cook 6-8 min.",
+            "Top with feta and serve with bread.",
+          ],
+        },
+        {
+          id: 2,
+          title: "Paneer butter masala",
+          time: "35 min",
+          tag: "expiring",
+          color: "#FBEFDC",
+          emoji: "🍛",
+          ingredients: [
+            { name: "Paneer", have: true },
+            { name: "Tomatoes", have: true },
+            { name: "Butter", have: false },
+            { name: "Cream", have: false },
+            { name: "Garam masala", have: true },
+            { name: "Rice", have: true },
+          ],
+          steps: [
+            "Blend tomatoes into a smooth puree.",
+            "Cook puree with butter and spices 15 min.",
+            "Add paneer cubes and cream, simmer 5 min.",
+            "Serve hot with rice.",
+          ],
+        },
+        {
+          id: 3,
+          title: "Curd rice with tempering",
+          time: "15 min",
+          tag: "quick",
+          color: "#E7EDFA",
+          emoji: "🍚",
+          ingredients: [
+            { name: "Rice", have: true },
+            { name: "Yogurt", have: true },
+            { name: "Mustard seeds", have: false },
+            { name: "Curry leaves", have: false },
+            { name: "Green chili", have: false },
+          ],
+          steps: [
+            "Mash cooked rice with yogurt.",
+            "Temper mustard seeds and curry leaves in oil.",
+            "Mix tempering into the rice.",
+            "Serve chilled or at room temp.",
+          ],
+        },
+        {
+          id: 4,
+          title: "Dal tadka",
+          time: "30 min",
+          tag: "pantry",
+          color: "#FBEFDC",
+          emoji: "🥘",
+          ingredients: [
+            { name: "Toor dal", have: true },
+            { name: "Onion", have: true },
+            { name: "Tomatoes", have: true },
+            { name: "Garlic", have: false },
+            { name: "Cumin", have: false },
+          ],
+          steps: [
+            "Pressure-cook dal until soft.",
+            "Sauté onion, garlic, tomatoes.",
+            "Add dal and simmer 10 min.",
+            "Temper with cumin and serve.",
+          ],
+        },
+        {
+          id: 5,
+          title: "Vegetable fried rice",
+          time: "20 min",
+          tag: "quick",
+          color: "#E3F2E7",
+          emoji: "🍜",
+          ingredients: [
+            { name: "Rice", have: true },
+            { name: "Onion", have: true },
+            { name: "Bell peppers", have: false },
+            { name: "Soy sauce", have: false },
+            { name: "Eggs", have: true },
+          ],
+          steps: [
+            "Scramble eggs and set aside.",
+            "Stir-fry vegetables on high heat.",
+            "Add rice and soy sauce, toss well.",
+            "Fold in eggs and serve.",
+          ],
+        },
+        {
+          id: 6,
+          title: "French toast",
+          time: "10 min",
+          tag: "expiring",
+          color: "#FBE7E3",
+          emoji: "🍞",
+          ingredients: [
+            { name: "Bread", have: true },
+            { name: "Milk", have: true },
+            { name: "Eggs", have: true },
+            { name: "Cinnamon", have: false },
+            { name: "Honey", have: false },
+          ],
+          steps: [
+            "Whisk milk, eggs, and cinnamon.",
+            "Dip bread slices in the mixture.",
+            "Pan-fry until golden on both sides.",
+            "Drizzle with honey and serve.",
+          ],
+        },
+      ];
+
+      const filters = [
+        { key: "all", label: "All recipes" },
+        { key: "expiring", label: "Uses expiring items" },
+        { key: "quick", label: "Quick (under 20 min)" },
+        { key: "pantry", label: "Pantry staples" },
+      ];
+      let activeFilter = "all";
+
+      function matchPercent(r) {
+        const have = r.ingredients.filter((i) => i.have).length;
+        return Math.round((have / r.ingredients.length) * 100);
+      }
+      function matchClass(p) {
+        if (p >= 70) return "high";
+        if (p >= 40) return "mid";
+        return "low";
+      }
+
+      function renderFilters() {
+        document.getElementById("filterBar").innerHTML = filters
+          .map(
+            (f) =>
+              `<button class="chip ${f.key === activeFilter ? "active" : ""}" onclick="setFilter('${f.key}')">${f.label}</button>`,
+          )
+          .join("");
+      }
+      function setFilter(key) {
+        activeFilter = key;
+        renderGrid();
+      }
+
+      function renderGrid() {
+        renderFilters();
+        let items = recipes;
+        if (activeFilter === "quick") {
+          items = items.filter((r) => parseInt(r.time) <= 20);
+        } else if (activeFilter !== "all") {
+          items = items.filter((r) => r.tag === activeFilter);
+        }
+        items = [...items].sort((a, b) => matchPercent(b) - matchPercent(a));
+
+        document.getElementById("recipeGrid").innerHTML = items
+          .map((r) => {
+            const pct = matchPercent(r);
+            const cls = matchClass(pct);
+            return `
+      <div class="recipe-card" onclick="openRecipe(${r.id})">
+        <div class="recipe-thumb" style="background:${r.color};font-size:36px;">${r.emoji}</div>
+        <h3>${r.title}</h3>
+        <div class="match-row">
+          <span>${r.ingredients.filter((i) => i.have).length}/${r.ingredients.length} ingredients</span>
+          <span class="match-badge ${cls}">${pct}% match</span>
+        </div>
+        <div class="meta-row">
+          <span>⏱ ${r.time}</span>
+        </div>
+      </div>`;
+          })
+          .join("");
+      }
+
+      function openRecipe(id) {
+        const r = recipes.find((x) => x.id === id);
+        const pct = matchPercent(r);
+        const missing = r.ingredients.filter((i) => !i.have);
+        document.getElementById("modalContent").innerHTML = `
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h2>${r.title}</h2>
+      <div class="sub">⏱ ${r.time} · ${pct}% ingredients on hand</div>
+      <ul class="ing-list">
+        ${r.ingredients
+          .map(
+            (i) => `
+          <li>
+            <span class="ing-dot ${i.have ? "have" : "missing"}"></span>
+            ${i.name}
+            ${!i.have ? '<span class="missing-label">Missing</span>' : ""}
+          </li>`,
+          )
+          .join("")}
+      </ul>
+      <h3 style="font-size:14px;margin-bottom:8px;">Instructions</h3>
+      <ol class="steps">
+        ${r.steps.map((s) => `<li>${s}</li>`).join("")}
+      </ol>
+      <div class="cta-row">
+        <button class="btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn-primary" onclick="addMissingToList(${r.id})">Add ${missing.length} missing to list</button>
+      </div>
+    `;
+        document.getElementById("modalBackdrop").classList.add("open");
+      }
+      function closeModal() {
+        document.getElementById("modalBackdrop").classList.remove("open");
+      }
+      function addMissingToList(id) {
+        alert("Would add missing ingredients to your Shopping List.");
+        closeModal();
+      }
+      document
+        .getElementById("modalBackdrop")
+        .addEventListener("click", (e) => {
+          if (e.target.id === "modalBackdrop") closeModal();
+        });
+
+      renderGrid();
+    </script>
+  </body>
+</html>

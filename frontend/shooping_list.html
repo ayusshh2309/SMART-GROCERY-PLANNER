@@ -6,32 +6,37 @@
     <title>Smart Grocery Planner — Shopping List</title>
     <style>
       :root {
-        --bg: #f4f6f2;
-        --paper: #ffffff;
-        --ink: #1b261e;
-        --ink-soft: #677065;
-        --line: #e4e9e0;
-        --sidebar: #142019;
-        --sidebar-text: #afc0b2;
-        --sidebar-active: #22372a;
-        --herb: #2f7d4f;
-        --herb-light: #e3f2e7;
-        --amber: #c9821f;
-        --amber-light: #fbefdc;
-        --coral: #c24a3c;
-        --coral-light: #fbe7e3;
-        --blue: #3768c2;
-        --blue-light: #e7edfa;
-        --plum: #7355b0;
-        --plum-light: #efe8fa;
-        --radius: 14px;
+        --bg: #07110c;
+        --paper: #0f1712;
+        --ink: #f3f8f4;
+        --ink-soft: #8da393;
+        --line: rgba(122, 164, 132, 0.2);
+        --sidebar: #050a08;
+        --sidebar-text: #8da393;
+        --sidebar-active: #163423;
+        --herb: #2fd36a;
+        --herb-light: rgba(47, 211, 106, 0.16);
+        --amber: #f0b04b;
+        --amber-light: rgba(240, 176, 75, 0.16);
+        --coral: #ff6b6b;
+        --coral-light: rgba(255, 107, 107, 0.16);
+        --blue: #5aa3ff;
+        --blue-light: rgba(90, 163, 255, 0.16);
+        --plum: #8c7ef5;
+        --plum-light: rgba(140, 126, 245, 0.16);
+        --radius: 16px;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        background: var(--bg);
+        background: radial-gradient(
+          circle at top left,
+          #0f1d14 0%,
+          var(--bg) 45%,
+          #050806 100%
+        );
         color: var(--ink);
         font-family:
           ui-sans-serif,
@@ -120,6 +125,7 @@
         background: none;
         text-align: left;
         width: 100%;
+        text-decoration: none;
       }
       .nav-item svg {
         flex-shrink: 0;
@@ -418,33 +424,38 @@
       const navItems = [
         {
           label: "Dashboard",
+          href: "dashboard.html",
           icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
         },
         {
           label: "Pantry",
+          href: "pantry.html",
           icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
         },
         {
           label: "Shopping list",
           active: true,
+          href: "shooping_list.html",
           icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
         },
         {
-          label: "Recipes",
-          icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+          label: "Expenses",
+          href: "expenses.html",
+          icon: '<path d="M12 1v22"/><path d="M17 5H9.5A3.5 3.5 0 0 0 9.5 12H15a3.5 3.5 0 0 1 0 7H6"/>',
         },
         {
-          label: "Price compare",
-          icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+          label: "Recipes",
+          href: "recipes.html",
+          icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
         },
       ];
       document.getElementById("navList").innerHTML = navItems
         .map(
           (n) => `
-    <button class="nav-item ${n.active ? "active" : ""}">
+    <a class="nav-item ${n.active ? "active" : ""}" href="${n.href}">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
       ${n.label}
-    </button>`,
+    </a>`,
         )
         .join("");
 
