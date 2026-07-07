@@ -4,7 +4,546 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Grocery Planner — Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css" />
+    <style>
+      :root {
+        --bg: #f4f6f2;
+        --paper: #ffffff;
+        --ink: #1b261e;
+        --ink-soft: #677065;
+        --line: #e4e9e0;
+
+        --sidebar: #142019;
+        --sidebar-text: #afc0b2;
+        --sidebar-active: #22372a;
+
+        --herb: #2f7d4f;
+        --herb-light: #e3f2e7;
+        --amber: #c9821f;
+        --amber-light: #fbefdc;
+        --coral: #c24a3c;
+        --coral-light: #fbe7e3;
+        --blue: #3768c2;
+        --blue-light: #e7edfa;
+        --plum: #7355b0;
+        --plum-light: #efe8fa;
+
+        --radius: 14px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      .mono {
+        font-family:
+          ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-weight: 600;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--herb);
+        outline-offset: 2px;
+      }
+
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding: 18px 14px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 6px 22px;
+      }
+      .brand .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand .name {
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .brand .name span {
+        display: block;
+        font-size: 11px;
+        color: var(--sidebar-text);
+        font-weight: 400;
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--sidebar-text);
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .nav-item:hover {
+        background: #1b2c22;
+        color: #fff;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+        color: #7cd49b;
+      }
+
+      .upsell {
+        margin-top: auto;
+        background: #1b2c22;
+        border: 1px solid #2a3f32;
+        border-radius: 12px;
+        padding: 14px;
+        color: #fff;
+      }
+      .upsell .crown {
+        font-size: 12px;
+        font-weight: 600;
+        color: #f0c75e;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 6px;
+      }
+      .upsell p {
+        font-size: 11.5px;
+        color: var(--sidebar-text);
+        margin: 0 0 10px;
+        line-height: 1.4;
+      }
+      .upsell button {
+        width: 100%;
+        background: var(--herb);
+        color: #fff;
+        border: none;
+        padding: 8px;
+        border-radius: 8px;
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 22px 28px 50px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+        gap: 20px;
+      }
+      .topbar h1 {
+        font-size: 21px;
+      }
+      .topbar p {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 8px 12px;
+        width: 260px;
+        color: var(--ink-soft);
+        font-size: 13px;
+      }
+      .search input {
+        border: none;
+        outline: none;
+        font-size: 13px;
+        flex: 1;
+        background: none;
+        color: var(--ink);
+        font-family: inherit;
+      }
+      .icon-btn-round {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink-soft);
+        position: relative;
+        flex-shrink: 0;
+      }
+      .badge {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        background: var(--coral);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .profile .av {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--herb-light);
+        color: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 13px;
+      }
+      .profile .nm {
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .logout-btn {
+        border: none;
+        background: #f3f7f2;
+        color: var(--herb);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .stat-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+      .card-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .stat-card .icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .stat-card .title {
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+      .stat-card .value {
+        font-size: 21px;
+        display: block;
+        font-weight: 700;
+      }
+      .stat-card .detail {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+        display: block;
+      }
+
+      .charts {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .panel-head h2 {
+        font-size: 15px;
+      }
+      .panel-head .select {
+        font-size: 12px;
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 5px 9px;
+        background: var(--paper);
+      }
+      .panel-head a,
+      .view-all {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--herb);
+        text-decoration: none;
+        background: none;
+        border: none;
+      }
+      .chart-wrap {
+        height: 230px;
+        position: relative;
+      }
+      .donut-wrap {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .donut-canvas-box {
+        width: 150px;
+        height: 150px;
+        flex-shrink: 0;
+        position: relative;
+      }
+      .donut-center {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .legend {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .legend-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12.5px;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .legend-value {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 600;
+        color: var(--ink-soft);
+      }
+      .lists {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+      }
+      .list-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .list-thumb {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .list-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .item-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .item-meta {
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin-top: 1px;
+      }
+      .tag {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+      .tag.danger {
+        background: var(--coral-light);
+        color: var(--coral);
+      }
+      .tag.warn {
+        background: var(--amber-light);
+        color: var(--amber);
+      }
+      .tag.low {
+        background: var(--blue-light);
+        color: var(--blue);
+      }
+      .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .activity-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .activity-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+        color: #fff;
+      }
+      .activity-info .activity-text {
+        font-size: 12.5px;
+        line-height: 1.4;
+      }
+      .activity-info .activity-time {
+        font-size: 11px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+
+      @media (max-width: 1100px) {
+        .stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .charts {
+          grid-template-columns: 1fr;
+        }
+        .lists {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 760px) {
+        .shell {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+        }
+        .main {
+          padding: 16px 16px 32px;
+        }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .topbar-right {
+          width: 100%;
+          flex-wrap: wrap;
+        }
+        .search {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="shell">
@@ -174,6 +713,512 @@
       </main>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script>
+      const dashboardData = {
+        stats: [
+          {
+            title: "Total Items",
+            value: "128",
+            detail: "↑ 12 from last week",
+            theme: "total",
+          },
+          {
+            title: "Expiring Soon",
+            value: "7",
+            detail: "View items",
+            theme: "alert",
+          },
+          {
+            title: "Low Stock Items",
+            value: "14",
+            detail: "View items",
+            theme: "warning",
+          },
+          {
+            title: "Shopping List",
+            value: "10",
+            detail: "View list",
+            theme: "list",
+          },
+          {
+            title: "Monthly Expense",
+            value: "₹4,250",
+            detail: "↓ 8% from last month",
+            theme: "expense",
+          },
+        ],
+        lineChart: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          values: [2100, 3600, 2900, 4100, 4700, 4300],
+        },
+        categories: [
+          { name: "Vegetables", value: 1487, color: "#53B37C" },
+          { name: "Fruits", value: 1062, color: "#4E88F1" },
+          { name: "Dairy", value: 850, color: "#F5A53A" },
+          { name: "Snacks", value: 425, color: "#9B67E7" },
+          { name: "Others", value: 426, color: "#F05759" },
+        ],
+        expiringSoon: [
+          {
+            name: "Milk",
+            meta: "1 Litre",
+            note: "Expires in 1 day",
+            icon: "🥛",
+            style: "alert",
+          },
+          {
+            name: "Tomatoes",
+            meta: "500 g",
+            note: "Expires in 2 days",
+            icon: "🍅",
+            style: "warn",
+          },
+          {
+            name: "Paneer",
+            meta: "200 g",
+            note: "Expires in 2 days",
+            icon: "🧀",
+            style: "warn",
+          },
+          {
+            name: "Yogurt",
+            meta: "400 g",
+            note: "Expires in 3 days",
+            icon: "🥣",
+            style: "low",
+          },
+        ],
+        lowStock: [
+          {
+            name: "Rice",
+            meta: "1 kg left",
+            note: "Low",
+            icon: "🍚",
+            style: "low",
+          },
+          {
+            name: "Toor Dal",
+            meta: "500 g left",
+            note: "Low",
+            icon: "🌾",
+            style: "low",
+          },
+          {
+            name: "Cooking Oil",
+            meta: "250 ml left",
+            note: "Low",
+            icon: "🫒",
+            style: "low",
+          },
+          {
+            name: "Sugar",
+            meta: "250 g left",
+            note: "Low",
+            icon: "🍬",
+            style: "low",
+          },
+        ],
+        activities: [
+          {
+            icon: "➕",
+            title: "Added Milk to pantry",
+            time: "2 mins ago",
+            color: "#2F7D4F",
+          },
+          {
+            icon: "📝",
+            title: "Added Tomatoes to shopping list",
+            time: "15 mins ago",
+            color: "#4E88F1",
+          },
+          {
+            icon: "💵",
+            title: "Recorded expense of ₹450 at Reliance Fresh",
+            time: "1 hour ago",
+            color: "#7355B0",
+          },
+          {
+            icon: "⚠️",
+            title: "Paneer is expiring tomorrow",
+            time: "2 hours ago",
+            color: "#C24A3C",
+          },
+          {
+            icon: "📈",
+            title: "Monthly report generated",
+            time: "5 hours ago",
+            color: "#3768C2",
+          },
+        ],
+      };
+
+      function getStoredUser() {
+        try {
+          return JSON.parse(localStorage.getItem("smartGroceryUser"));
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function applyUserSession() {
+        const user = getStoredUser();
+        if (!user) {
+          window.location.href = "../login.html";
+          return;
+        }
+
+        const greeting = document.getElementById("dashboardGreeting");
+        const sub = document.getElementById("dashboardSub");
+        const nameEl = document.getElementById("profileName");
+        const avatarEl = document.getElementById("profileAvatar");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        if (greeting) {
+          const firstName = user.name?.split(" ")[0] || "there";
+          greeting.textContent = `Good morning, ${firstName}! 👋`;
+        }
+
+        if (sub) {
+          sub.textContent = `Here is what is happening with your groceries today, ${user.name || "friend"}.`;
+        }
+
+        if (nameEl) {
+          nameEl.textContent = user.name || "Member";
+        }
+
+        if (avatarEl) {
+          const initials = (user.name || "MG")
+            .split(" ")
+            .map((part) => part[0])
+            .slice(0, 2)
+            .join("")
+            .toUpperCase();
+          avatarEl.textContent = initials;
+        }
+
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("smartGroceryUser");
+            window.location.href = "../index.html";
+          });
+        }
+      }
+
+      function renderStats() {
+        const container = document.getElementById("statsRow");
+        if (!container) return;
+        container.innerHTML = "";
+
+        dashboardData.stats.forEach((card) => {
+          const cardEl = document.createElement("div");
+          cardEl.className = "stat-card";
+          cardEl.innerHTML = `
+            <div class="card-top">
+              <span class="icon ${card.theme}">${getCardIcon(card.theme)}</span>
+              <span class="title">${card.title}</span>
+            </div>
+            <span class="value">${card.value}</span>
+            <span class="detail">${card.detail}</span>
+          `;
+          container.appendChild(cardEl);
+        });
+      }
+
+      function getCardIcon(theme) {
+        switch (theme) {
+          case "total":
+            return "🛒";
+          case "alert":
+            return "⚠️";
+          case "warning":
+            return "📉";
+          case "list":
+            return "📝";
+          case "expense":
+            return "₹";
+          default:
+            return "•";
+        }
+      }
+
+      function drawLineChart() {
+        const canvas = document.getElementById("lineChartCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const { labels, values } = dashboardData.lineChart;
+        const padding = 40;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        canvas.width = width * window.devicePixelRatio;
+        canvas.height = height * window.devicePixelRatio;
+        ctx.setTransform(
+          window.devicePixelRatio,
+          0,
+          0,
+          window.devicePixelRatio,
+          0,
+          0,
+        );
+        ctx.clearRect(0, 0, width, height);
+
+        const maxValue = Math.max(...values) * 1.06;
+        const minValue = Math.min(...values) * 0.9;
+        const chartHeight = height - padding * 2;
+        const chartWidth = width - padding * 2;
+        const stepX = chartWidth / (values.length - 1);
+
+        ctx.fillStyle = "#101820cc";
+        ctx.font = "12px ui-sans-serif";
+        ctx.textAlign = "center";
+
+        values.forEach((value, index) => {
+          const x = padding + stepX * index;
+          const y =
+            padding +
+            ((maxValue - value) / (maxValue - minValue)) * chartHeight;
+          ctx.fillText(`₹${value}`, x, y - 16);
+        });
+
+        ctx.strokeStyle = "#2F7D4F";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        values.forEach((value, index) => {
+          const x = padding + stepX * index;
+          const y =
+            padding +
+            ((maxValue - value) / (maxValue - minValue)) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(47,125,79,0.18)";
+        ctx.beginPath();
+        values.forEach((value, index) => {
+          const x = padding + stepX * index;
+          const y =
+            padding +
+            ((maxValue - value) / (maxValue - minValue)) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.lineTo(padding + chartWidth, padding + chartHeight);
+        ctx.lineTo(padding, padding + chartHeight);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = "#D1D9DB";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let index = 0; index < labels.length; index += 1) {
+          const x = padding + stepX * index;
+          const y = padding + chartHeight;
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, y + 6);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = "#677065";
+        ctx.textAlign = "center";
+        labels.forEach((label, index) => {
+          const x = padding + stepX * index;
+          ctx.fillText(label, x, height - 12);
+        });
+      }
+
+      function drawDonutChart() {
+        const canvas = document.getElementById("donutChartCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const categories = dashboardData.categories;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        canvas.width = width * window.devicePixelRatio;
+        canvas.height = height * window.devicePixelRatio;
+        ctx.setTransform(
+          window.devicePixelRatio,
+          0,
+          0,
+          window.devicePixelRatio,
+          0,
+          0,
+        );
+        ctx.clearRect(0, 0, width, height);
+
+        const total = categories.reduce((sum, item) => sum + item.value, 0);
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(centerX, centerY) * 0.8;
+        let startAngle = -Math.PI / 2;
+
+        categories.forEach((category) => {
+          const sliceAngle = (category.value / total) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(
+            centerX,
+            centerY,
+            radius,
+            startAngle,
+            startAngle + sliceAngle,
+          );
+          ctx.closePath();
+          ctx.fillStyle = category.color;
+          ctx.fill();
+          startAngle += sliceAngle;
+        });
+
+        ctx.beginPath();
+        ctx.fillStyle = "#F4F6F2";
+        ctx.arc(centerX, centerY, radius * 0.55, 0, Math.PI * 2);
+        ctx.fill();
+
+        renderLegend();
+      }
+
+      function renderLegend() {
+        const list = document.getElementById("legendList");
+        if (!list) return;
+        list.innerHTML = "";
+        dashboardData.categories.forEach((category) => {
+          const row = document.createElement("div");
+          row.className = "legend-row";
+          row.innerHTML = `
+            <div class="legend-item">
+              <span class="legend-dot" style="background:${category.color}"></span>
+              <span class="legend-label">${category.name}</span>
+            </div>
+            <span class="legend-value">₹${category.value}</span>
+          `;
+          list.appendChild(row);
+        });
+      }
+
+      function renderListItems() {
+        const expiring = document.getElementById("expiringList");
+        const lowStock = document.getElementById("lowStockList");
+        const activity = document.getElementById("activityList");
+
+        expiring.innerHTML = "";
+        lowStock.innerHTML = "";
+        activity.innerHTML = "";
+
+        dashboardData.expiringSoon.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "list-item";
+          row.innerHTML = `
+            <div class="list-thumb" style="background:${getTagBackground(item.style)}">${item.icon}</div>
+            <div class="list-info">
+              <div class="item-name">${item.name}</div>
+              <div class="item-meta">${item.meta}</div>
+            </div>
+            <span class="tag ${item.style}">${item.note}</span>
+          `;
+          expiring.appendChild(row);
+        });
+
+        dashboardData.lowStock.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "list-item";
+          row.innerHTML = `
+            <div class="list-thumb" style="background:${getTagBackground(item.style)}">${item.icon}</div>
+            <div class="list-info">
+              <div class="item-name">${item.name}</div>
+              <div class="item-meta">${item.meta}</div>
+            </div>
+            <span class="tag ${item.style}">${item.note}</span>
+          `;
+          lowStock.appendChild(row);
+        });
+
+        dashboardData.activities.forEach((activityItem) => {
+          const row = document.createElement("div");
+          row.className = "activity-item";
+          row.innerHTML = `
+            <div class="activity-icon" style="background:${activityItem.color};">${activityItem.icon}</div>
+            <div class="activity-info">
+              <div class="activity-text">${activityItem.title}</div>
+              <div class="activity-time">${activityItem.time}</div>
+            </div>
+          `;
+          activity.appendChild(row);
+        });
+      }
+
+      function getTagBackground(style) {
+        switch (style) {
+          case "alert":
+            return "rgba(194,74,60,0.15)";
+          case "warn":
+            return "rgba(201,130,31,0.15)";
+          case "low":
+            return "rgba(55,104,194,0.15)";
+          default:
+            return "rgba(47,125,79,0.15)";
+        }
+      }
+
+      function setupSearch() {
+        const search = document.getElementById("dashboardSearch");
+        if (!search) return;
+        search.addEventListener("input", () => {
+          const query = search.value.trim().toLowerCase();
+          const filterItem = (item) =>
+            item.name.toLowerCase().includes(query) ||
+            item.meta.toLowerCase().includes(query);
+
+          const expiringContainer = document.getElementById("expiringList");
+          const lowStockContainer = document.getElementById("lowStockList");
+
+          expiringContainer.innerHTML = "";
+          dashboardData.expiringSoon.filter(filterItem).forEach((item) => {
+            const row = document.createElement("div");
+            row.className = "list-item";
+            row.innerHTML = `
+              <div class="list-thumb" style="background:${getTagBackground(item.style)}">${item.icon}</div>
+              <div class="list-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-meta">${item.meta}</div>
+              </div>
+              <span class="tag ${item.style}">${item.note}</span>
+            `;
+            expiringContainer.appendChild(row);
+          });
+
+          lowStockContainer.innerHTML = "";
+          dashboardData.lowStock.filter(filterItem).forEach((item) => {
+            const row = document.createElement("div");
+            row.className = "list-item";
+            row.innerHTML = `
+              <div class="list-thumb" style="background:${getTagBackground(item.style)}">${item.icon}</div>
+              <div class="list-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-meta">${item.meta}</div>
+              </div>
+              <span class="tag ${item.style}">${item.note}</span>
+            `;
+            lowStockContainer.appendChild(row);
+          });
+        });
+      }
+
+      function handleResize() {
+        drawLineChart();
+        drawDonutChart();
+      }
+
+      function initDashboard() {
+        applyUserSession();
+        renderStats();
+        renderListItems();
+        drawLineChart();
+        drawDonutChart();
+        renderLegend();
+        setupSearch();
+        window.addEventListener("resize", handleResize);
+      }
+
+      window.addEventListener("load", initDashboard);
+    </script>
   </body>
 </html>

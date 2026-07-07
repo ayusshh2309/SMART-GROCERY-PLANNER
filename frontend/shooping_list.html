@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Shopping List</title>
+    <style>
+      :root {
+        --bg: #f4f6f2;
+        --paper: #ffffff;
+        --ink: #1b261e;
+        --ink-soft: #677065;
+        --line: #e4e9e0;
+        --sidebar: #142019;
+        --sidebar-text: #afc0b2;
+        --sidebar-active: #22372a;
+        --herb: #2f7d4f;
+        --herb-light: #e3f2e7;
+        --amber: #c9821f;
+        --amber-light: #fbefdc;
+        --coral: #c24a3c;
+        --coral-light: #fbe7e3;
+        --blue: #3768c2;
+        --blue-light: #e7edfa;
+        --plum: #7355b0;
+        --plum-light: #efe8fa;
+        --radius: 14px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      .mono {
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-weight: 600;
+      }
+      button,
+      input {
+        font-family: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--herb);
+        outline-offset: 2px;
+      }
+
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding: 18px 14px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 6px 22px;
+      }
+      .brand .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand .name {
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .brand .name span {
+        display: block;
+        font-size: 11px;
+        color: var(--sidebar-text);
+        font-weight: 400;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--sidebar-text);
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .nav-item:hover {
+        background: #1b2c22;
+        color: #fff;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+        color: #7cd49b;
+      }
+
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 22px 28px 50px;
+        max-width: 760px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .topbar h1 {
+        font-size: 21px;
+      }
+      .topbar .sub {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+
+      .progress-wrap {
+        margin: 16px 0 20px;
+      }
+      .progress-track {
+        height: 8px;
+        background: var(--line);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--herb);
+        border-radius: 20px;
+        transition: width 0.25s ease;
+      }
+      .progress-label {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-top: 6px;
+      }
+
+      .add-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+      .add-row input {
+        flex: 1;
+        padding: 10px 13px;
+        border-radius: 9px;
+        border: 1px solid var(--line);
+        font-size: 13.5px;
+        outline: none;
+      }
+      .add-row input:focus {
+        border-color: var(--herb);
+      }
+      .add-row button {
+        background: var(--herb);
+        color: #fff;
+        border: none;
+        border-radius: 9px;
+        padding: 0 18px;
+        font-size: 13.5px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .group {
+        margin-bottom: 22px;
+      }
+      .group-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+      }
+      .group-head .count {
+        background: var(--line);
+        color: var(--ink-soft);
+        border-radius: 20px;
+        padding: 1px 8px;
+        font-size: 11px;
+      }
+
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .item-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+      .item-row:last-child {
+        border-bottom: none;
+      }
+      .checkbox {
+        width: 22px;
+        height: 22px;
+        border-radius: 7px;
+        border: 2px solid var(--line);
+        flex-shrink: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+      }
+      .checkbox.checked {
+        background: var(--herb);
+        border-color: var(--herb);
+      }
+      .item-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .item-name {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .item-name.done {
+        text-decoration: line-through;
+        color: var(--ink-soft);
+      }
+      .item-qty {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-top: 1px;
+      }
+      .source-tag {
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+      .source-tag.low {
+        background: var(--coral-light);
+        color: var(--coral);
+      }
+      .source-tag.recipe {
+        background: var(--plum-light);
+        color: var(--plum);
+      }
+      .source-tag.manual {
+        background: var(--blue-light);
+        color: var(--blue);
+      }
+      .del-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        border: none;
+        background: none;
+        color: var(--ink-soft);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .del-btn:hover {
+        color: var(--coral);
+      }
+
+      .empty-state {
+        padding: 50px 20px;
+        text-align: center;
+        color: var(--ink-soft);
+      }
+      .clear-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 14px;
+      }
+      .clear-btn {
+        background: none;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 8px 14px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--ink-soft);
+      }
+      .clear-btn:hover {
+        border-color: var(--coral);
+        color: var(--coral);
+      }
+
+      @media (max-width: 800px) {
+        .sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+          </div>
+          <div class="name">Smart Grocery<span>Planner</span></div>
+        </div>
+        <nav id="navList"></nav>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <h1>Shopping list</h1>
+            <div class="sub" id="listSub">Loading...</div>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              id="progressFill"
+              style="width: 0%"
+            ></div>
+          </div>
+          <div class="progress-label" id="progressLabel"></div>
+        </div>
+
+        <div class="add-row">
+          <input
+            type="text"
+            id="addInput"
+            placeholder="Add an item, e.g. Bananas"
+          />
+          <button onclick="addManualItem()">Add</button>
+        </div>
+
+        <div id="groupsContainer"></div>
+
+        <div class="empty-state" id="emptyState" style="display: none">
+          Your shopping list is empty. Add something above.
+        </div>
+
+        <div class="clear-row">
+          <button class="clear-btn" onclick="clearPurchased()">
+            Clear purchased items
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // ===================== Nav =====================
+      const navItems = [
+        {
+          label: "Dashboard",
+          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        },
+        {
+          label: "Pantry",
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        },
+        {
+          label: "Shopping list",
+          active: true,
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          label: "Recipes",
+          icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+        },
+        {
+          label: "Price compare",
+          icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+      ];
+      document.getElementById("navList").innerHTML = navItems
+        .map(
+          (n) => `
+    <button class="nav-item ${n.active ? "active" : ""}">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
+      ${n.label}
+    </button>`,
+        )
+        .join("");
+
+      // ===================== Mock data =====================
+      let listItems = [
+        {
+          id: 1,
+          name: "Milk",
+          qty: "1 L",
+          category: "Dairy",
+          source: "low",
+          checked: false,
+        },
+        {
+          id: 2,
+          name: "Toor dal",
+          qty: "1 kg",
+          category: "Pantry",
+          source: "low",
+          checked: false,
+        },
+        {
+          id: 3,
+          name: "Cooking oil",
+          qty: "500 ml",
+          category: "Pantry",
+          source: "low",
+          checked: false,
+        },
+        {
+          id: 4,
+          name: "Sugar",
+          qty: "1 kg",
+          category: "Pantry",
+          source: "low",
+          checked: true,
+        },
+        {
+          id: 5,
+          name: "Eggs",
+          qty: "12 ct",
+          category: "Dairy",
+          source: "recipe",
+          checked: false,
+        },
+        {
+          id: 6,
+          name: "Bell peppers",
+          qty: "3 ct",
+          category: "Produce",
+          source: "recipe",
+          checked: false,
+        },
+        {
+          id: 7,
+          name: "Coriander",
+          qty: "1 bunch",
+          category: "Produce",
+          source: "manual",
+          checked: false,
+        },
+        {
+          id: 8,
+          name: "Chocolate bar",
+          qty: "1 ct",
+          category: "Snacks",
+          source: "manual",
+          checked: true,
+        },
+      ];
+      let nextId = 9;
+
+      const sourceLabel = {
+        low: "Low stock",
+        recipe: "For recipe",
+        manual: "Manual",
+      };
+
+      function render() {
+        const total = listItems.length;
+        const done = listItems.filter((i) => i.checked).length;
+
+        document.getElementById("listSub").textContent =
+          `${total} items · ${done} purchased`;
+        document.getElementById("progressFill").style.width = total
+          ? `${(done / total) * 100}%`
+          : "0%";
+        document.getElementById("progressLabel").textContent = total
+          ? `${done} of ${total} done`
+          : "Nothing on your list yet";
+
+        const container = document.getElementById("groupsContainer");
+        const empty = document.getElementById("emptyState");
+
+        if (total === 0) {
+          container.innerHTML = "";
+          empty.style.display = "block";
+          return;
+        }
+        empty.style.display = "none";
+
+        const categories = [...new Set(listItems.map((i) => i.category))];
+        container.innerHTML = categories
+          .map((cat) => {
+            const items = listItems.filter((i) => i.category === cat);
+            return `
+      <div class="group">
+        <div class="group-head">${cat} <span class="count">${items.length}</span></div>
+        <div class="panel">
+          ${items
+            .map(
+              (item) => `
+            <div class="item-row">
+              <div class="checkbox ${item.checked ? "checked" : ""}" onclick="toggleItem(${item.id})">
+                ${item.checked ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ""}
+              </div>
+              <div class="item-body">
+                <div class="item-name ${item.checked ? "done" : ""}">${item.name}</div>
+                <div class="item-qty">${item.qty}</div>
+              </div>
+              <span class="source-tag ${item.source}">${sourceLabel[item.source]}</span>
+              <button class="del-btn" onclick="deleteItem(${item.id})">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              </button>
+            </div>`,
+            )
+            .join("")}
+        </div>
+      </div>`;
+          })
+          .join("");
+      }
+
+      function toggleItem(id) {
+        const item = listItems.find((i) => i.id === id);
+        if (item) item.checked = !item.checked;
+        render();
+      }
+      function deleteItem(id) {
+        listItems = listItems.filter((i) => i.id !== id);
+        render();
+      }
+      function clearPurchased() {
+        listItems = listItems.filter((i) => !i.checked);
+        render();
+      }
+      function addManualItem() {
+        const input = document.getElementById("addInput");
+        const name = input.value.trim();
+        if (!name) return;
+        listItems.push({
+          id: nextId++,
+          name,
+          qty: "1 ct",
+          category: "Other",
+          source: "manual",
+          checked: false,
+        });
+        input.value = "";
+        render();
+      }
+      document.getElementById("addInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addManualItem();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
