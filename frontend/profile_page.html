@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Profile</title>
+    <style>
+      :root {
+        --bg: #0e1512;
+        --paper: #161f1a;
+        --paper-hover: #1b261f;
+        --ink: #eaf0ea;
+        --ink-soft: #8fa093;
+        --line: #243128;
+
+        --sidebar: #0a100d;
+        --sidebar-text: #8fa093;
+        --sidebar-active: #1b2c22;
+
+        --herb: #3fae68;
+        --herb-light: rgba(63, 174, 104, 0.14);
+        --amber: #e0a23b;
+        --amber-light: rgba(224, 162, 59, 0.14);
+        --coral: #e06b57;
+        --coral-light: rgba(224, 107, 87, 0.14);
+        --blue: #5b8def;
+        --blue-light: rgba(91, 141, 239, 0.14);
+        --plum: #9b7fd4;
+        --plum-light: rgba(155, 127, 212, 0.14);
+        --gold: #e8c766;
+
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      .mono {
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-weight: 600;
+      }
+      button,
+      input,
+      select {
+        font-family: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--herb);
+        outline-offset: 2px;
+      }
+
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding: 18px 14px;
+        border-right: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 6px 22px;
+      }
+      .brand .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand .name {
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .brand .name span {
+        display: block;
+        font-size: 11px;
+        color: var(--sidebar-text);
+        font-weight: 400;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--sidebar-text);
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .nav-item:hover {
+        background: #141f19;
+        color: #fff;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+        color: #7cd49b;
+      }
+
+      /* Main */
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 24px 28px 60px;
+      }
+      .topbar h1 {
+        font-size: 22px;
+      }
+      .topbar .sub {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+        margin-bottom: 22px;
+      }
+
+      /* Profile hero card */
+      .hero-card {
+        background: linear-gradient(135deg, #16261c 0%, #101a15 100%);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 28px;
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-bottom: 22px;
+        flex-wrap: wrap;
+      }
+      .avatar-wrap {
+        position: relative;
+        flex-shrink: 0;
+      }
+      .avatar {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--herb), #257a45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.02em;
+        border: 3px solid var(--line);
+      }
+      .status-dot {
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--herb);
+        border: 3px solid var(--paper);
+      }
+      .hero-info {
+        flex: 1;
+        min-width: 220px;
+      }
+      .hero-info h2 {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      .hero-info .email {
+        font-size: 13.5px;
+        color: var(--ink-soft);
+        margin-bottom: 10px;
+      }
+      .hero-meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
+      .badge.premium {
+        background: linear-gradient(
+          135deg,
+          rgba(232, 199, 102, 0.18),
+          rgba(232, 199, 102, 0.08)
+        );
+        color: var(--gold);
+        border: 1px solid rgba(232, 199, 102, 0.3);
+      }
+      .badge.joined {
+        background: var(--paper-hover);
+        color: var(--ink-soft);
+        border: 1px solid var(--line);
+      }
+      .edit-btn {
+        background: var(--herb);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 11px 18px;
+        font-size: 13.5px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .edit-btn:hover {
+        background: #379a5c;
+      }
+
+      /* Section titles */
+      .section-title {
+        font-size: 15px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Stat cards */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+      .stat-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+      .stat-card .icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .stat-card .num {
+        font-size: 23px;
+        display: block;
+      }
+      .stat-card .label {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-top: 3px;
+        display: block;
+      }
+
+      /* Two column layout */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        margin-bottom: 22px;
+        align-items: start;
+      }
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+
+      /* Personal info */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .info-field label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+      }
+      .info-field .value {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .info-field input,
+      .info-field select {
+        width: 100%;
+        padding: 9px 11px;
+        border-radius: 9px;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--ink);
+        font-size: 13.5px;
+        outline: none;
+        display: none;
+      }
+      .info-field input:focus,
+      .info-field select:focus {
+        border-color: var(--herb);
+      }
+      .editing .info-field .value {
+        display: none;
+      }
+      .editing .info-field input,
+      .editing .info-field select {
+        display: block;
+      }
+      .save-row {
+        display: none;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .editing .save-row {
+        display: flex;
+      }
+      .save-row button {
+        padding: 9px 16px;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        border: none;
+      }
+      .btn-save {
+        background: var(--herb);
+        color: #fff;
+      }
+      .btn-cancel {
+        background: var(--bg);
+        color: var(--ink-soft);
+        border: 1px solid var(--line) !important;
+      }
+
+      /* Achievements */
+      .achievements {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .achieve-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 12px;
+        background: var(--bg);
+      }
+      .achieve-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .achieve-body .nm {
+        font-size: 13.5px;
+        font-weight: 600;
+      }
+      .achieve-body .desc {
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin-top: 1px;
+      }
+      .achieve-row.locked {
+        opacity: 0.4;
+      }
+
+      /* Activity timeline */
+      .timeline {
+        display: flex;
+        flex-direction: column;
+      }
+      .tl-row {
+        display: flex;
+        gap: 12px;
+        padding-bottom: 16px;
+        position: relative;
+      }
+      .tl-row:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 32px;
+        bottom: 0;
+        width: 1px;
+        background: var(--line);
+      }
+      .tl-dot {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        z-index: 1;
+      }
+      .tl-body .tx {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .tl-body .ts {
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+          </div>
+          <div class="name">Smart Grocery<span>Planner</span></div>
+        </div>
+        <nav id="navList"></nav>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+        <div class="topbar">
+          <h1>Profile</h1>
+          <div class="sub">
+            Manage your account, preferences, and view your grocery habits.
+          </div>
+        </div>
+
+        <!-- HERO CARD -->
+        <div class="hero-card" id="heroCard"></div>
+
+        <!-- STATS -->
+        <div class="stats" id="statsRow"></div>
+
+        <div class="two-col">
+          <!-- LEFT: Personal info + Achievements -->
+          <div>
+            <div class="panel" id="infoPanel" style="margin-bottom: 16px">
+              <div class="section-title">Personal information</div>
+              <div class="info-grid" id="infoGrid"></div>
+              <div class="save-row">
+                <button class="btn-save" onclick="saveInfo()">
+                  Save changes
+                </button>
+                <button class="btn-cancel" onclick="cancelEdit()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="section-title">🏆 Achievements</div>
+              <div class="achievements" id="achievementsList"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Activity timeline -->
+          <div class="panel">
+            <div class="section-title">Recent activity</div>
+            <div class="timeline" id="timelineList"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // ===================== Nav =====================
+      const navItems = [
+        {
+          label: "Dashboard",
+          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        },
+        {
+          label: "Pantry",
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        },
+        {
+          label: "Shopping list",
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          label: "Expenses",
+          icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        {
+          label: "Categories",
+          icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+        },
+        {
+          label: "Analytics",
+          icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        },
+        {
+          label: "Notifications",
+          icon: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+        },
+        {
+          label: "Profile",
+          active: true,
+          icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        },
+        {
+          label: "Settings",
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+        },
+      ];
+      document.getElementById("navList").innerHTML = navItems
+        .map(
+          (n) => `
+    <button class="nav-item ${n.active ? "active" : ""}">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
+      ${n.label}
+    </button>`,
+        )
+        .join("");
+
+      // ===================== Mock user data =====================
+      let user = {
+        name: "Ayush Kumar",
+        email: "ayush.kumar@example.com",
+        phone: "+91 98765 43210",
+        address: "204, Green Meadows Apartments, Meerut, UP",
+        currency: "INR (₹)",
+        budget: "8000",
+        membership: "Premium",
+        joined: "2025-11-14",
+      };
+
+      const stats = [
+        {
+          num: "128",
+          label: "Pantry items",
+          bg: "var(--herb-light)",
+          fg: "var(--herb)",
+          icon: '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+        },
+        {
+          num: "37",
+          label: "Shopping lists created",
+          bg: "var(--blue-light)",
+          fg: "var(--blue)",
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          num: "214",
+          label: "Expenses recorded",
+          bg: "var(--amber-light)",
+          fg: "var(--amber)",
+          icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        {
+          num: "₹6,240",
+          label: "Money saved (est.)",
+          bg: "var(--plum-light)",
+          fg: "var(--plum)",
+          icon: '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/><circle cx="12" cy="12" r="10" stroke-opacity="0"/>',
+        },
+      ];
+
+      const achievements = [
+        {
+          name: "Budget Master",
+          desc: "Stayed under budget 3 months running",
+          icon: "🏆",
+          bg: "var(--amber-light)",
+          unlocked: true,
+        },
+        {
+          name: "Zero Waste",
+          desc: "No expired items for 30 days",
+          icon: "🥇",
+          bg: "var(--herb-light)",
+          unlocked: true,
+        },
+        {
+          name: "Healthy Shopper",
+          desc: "80%+ produce & whole foods in cart",
+          icon: "🥬",
+          bg: "var(--herb-light)",
+          unlocked: true,
+        },
+        {
+          name: "Frequent Planner",
+          desc: "Created 25+ shopping lists",
+          icon: "⭐",
+          bg: "var(--blue-light)",
+          unlocked: true,
+        },
+        {
+          name: "Recipe Explorer",
+          desc: "Try 50 different recipes",
+          icon: "🍳",
+          bg: "var(--plum-light)",
+          unlocked: false,
+        },
+      ];
+
+      const activity = [
+        {
+          tx: "Updated preferred currency to INR",
+          ts: "Today, 9:14 AM",
+          kind: "edit",
+        },
+        { tx: "Added Milk to pantry", ts: "Yesterday, 6:32 PM", kind: "add" },
+        {
+          tx: "Recorded expense of ₹450 at Reliance Fresh",
+          ts: "2 days ago",
+          kind: "expense",
+        },
+        {
+          tx: "Earned achievement: Zero Waste",
+          ts: "4 days ago",
+          kind: "achieve",
+        },
+        {
+          tx: 'Created shopping list "Weekly essentials"',
+          ts: "5 days ago",
+          kind: "list",
+        },
+        { tx: "Updated phone number", ts: "1 week ago", kind: "edit" },
+      ];
+
+      const actIcon = {
+        add: {
+          bg: "var(--herb-light)",
+          fg: "var(--herb)",
+          svg: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+        },
+        list: {
+          bg: "var(--blue-light)",
+          fg: "var(--blue)",
+          svg: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        expense: {
+          bg: "var(--amber-light)",
+          fg: "var(--amber)",
+          svg: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        edit: {
+          bg: "var(--plum-light)",
+          fg: "var(--plum)",
+          svg: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>',
+        },
+        achieve: {
+          bg: "var(--amber-light)",
+          fg: "var(--amber)",
+          svg: '<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/>',
+        },
+      };
+
+      // ===================== Render: hero card =====================
+      function initials(name) {
+        return name
+          .split(" ")
+          .map((w) => w[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase();
+      }
+      function formatJoinDate(d) {
+        return new Date(d).toLocaleDateString("en-IN", {
+          month: "long",
+          year: "numeric",
+        });
+      }
+      function renderHero() {
+        document.getElementById("heroCard").innerHTML = `
+      <div class="avatar-wrap">
+        <div class="avatar">${initials(user.name)}</div>
+        <div class="status-dot"></div>
+      </div>
+      <div class="hero-info">
+        <h2>${user.name}</h2>
+        <div class="email">${user.email}</div>
+        <div class="hero-meta">
+          <span class="badge premium">⭐ ${user.membership} member</span>
+          <span class="badge joined">Joined ${formatJoinDate(user.joined)}</span>
+        </div>
+      </div>
+      <button class="edit-btn" onclick="toggleEdit()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit profile
+      </button>
+    `;
+      }
+
+      // ===================== Render: stats =====================
+      document.getElementById("statsRow").innerHTML = stats
+        .map(
+          (s) => `
+    <div class="stat-card">
+      <div class="icon" style="background:${s.bg}; color:${s.fg};">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>
+      </div>
+      <span class="num mono">${s.num}</span>
+      <span class="label">${s.label}</span>
+    </div>
+  `,
+        )
+        .join("");
+
+      // ===================== Render: personal info (view/edit toggle) =====================
+      const infoFields = [
+        { key: "name", label: "Full name", type: "text" },
+        { key: "email", label: "Email", type: "email" },
+        { key: "phone", label: "Phone", type: "text" },
+        { key: "address", label: "Address", type: "text" },
+        {
+          key: "currency",
+          label: "Preferred currency",
+          type: "select",
+          options: ["INR (₹)", "USD ($)", "EUR (€)", "GBP (£)"],
+        },
+        { key: "budget", label: "Monthly budget (₹)", type: "number" },
+      ];
+      function renderInfo() {
+        document.getElementById("infoGrid").innerHTML = infoFields
+          .map((f) => {
+            const val = user[f.key];
+            let input;
+            if (f.type === "select") {
+              input = `<select id="edit-${f.key}">${f.options.map((o) => `<option ${o === val ? "selected" : ""}>${o}</option>`).join("")}</select>`;
+            } else {
+              input = `<input type="${f.type}" id="edit-${f.key}" value="${val}">`;
+            }
+            return `
+      <div class="info-field">
+        <label>${f.label}</label>
+        <div class="value">${f.key === "budget" ? "₹" + val : val}</div>
+        ${input}
+      </div>`;
+          })
+          .join("");
+      }
+
+      let editing = false;
+      function toggleEdit() {
+        editing = !editing;
+        document
+          .getElementById("infoPanel")
+          .classList.toggle("editing", editing);
+        if (editing)
+          document
+            .getElementById("infoPanel")
+            .scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      function cancelEdit() {
+        renderInfo();
+        editing = false;
+        document.getElementById("infoPanel").classList.remove("editing");
+      }
+      function saveInfo() {
+        infoFields.forEach((f) => {
+          const el = document.getElementById(`edit-${f.key}`);
+          user[f.key] = el.value;
+        });
+        renderHero();
+        renderInfo();
+        editing = false;
+        document.getElementById("infoPanel").classList.remove("editing");
+
+        // Log this edit to the activity feed dynamically
+        activity.unshift({
+          tx: "Updated personal information",
+          ts: "Just now",
+          kind: "edit",
+        });
+        renderTimeline();
+      }
+
+      // ===================== Render: achievements =====================
+      document.getElementById("achievementsList").innerHTML = achievements
+        .map(
+          (a) => `
+    <div class="achieve-row ${a.unlocked ? "" : "locked"}">
+      <div class="achieve-icon" style="background:${a.bg};">${a.icon}</div>
+      <div class="achieve-body">
+        <div class="nm">${a.name}</div>
+        <div class="desc">${a.unlocked ? a.desc : "Locked — " + a.desc}</div>
+      </div>
+    </div>
+  `,
+        )
+        .join("");
+
+      // ===================== Render: timeline =====================
+      function renderTimeline() {
+        document.getElementById("timelineList").innerHTML = activity
+          .map((a) => {
+            const c = actIcon[a.kind];
+            return `
+      <div class="tl-row">
+        <div class="tl-dot" style="background:${c.bg}; color:${c.fg};">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg>
+        </div>
+        <div class="tl-body">
+          <div class="tx">${a.tx}</div>
+          <div class="ts">${a.ts}</div>
+        </div>
+      </div>`;
+          })
+          .join("");
+      }
+
+      // ===================== Init =====================
+      renderHero();
+      renderInfo();
+      renderTimeline();
+    </script>
+  </body>
+</html>
