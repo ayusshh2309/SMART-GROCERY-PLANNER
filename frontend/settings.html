@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Settings</title>
+    <style>
+      :root {
+        --bg: #07110c;
+        --panel: #0f1712;
+        --panel-alt: #121d17;
+        --ink: #f3f8f4;
+        --muted: #8da393;
+        --line: rgba(122, 164, 132, 0.2);
+        --green: #2fd36a;
+        --green-soft: rgba(47, 211, 106, 0.16);
+        --blue: #5aa3ff;
+        --orange: #ffb86b;
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(
+          circle at top left,
+          #12231b 0%,
+          var(--bg) 45%,
+          #030806 100%
+        );
+        color: var(--ink);
+        font-family: Inter, "Segoe UI", Roboto, sans-serif;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 240px;
+        flex-shrink: 0;
+        padding: 22px 16px;
+        background: rgba(3, 8, 6, 0.95);
+        border-right: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+        padding: 6px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--green), #65f094);
+        color: #031008;
+        font-weight: 700;
+      }
+
+      .brand-name {
+        font-size: 0.98rem;
+        font-weight: 700;
+      }
+
+      .brand-name span {
+        display: block;
+        font-size: 0.74rem;
+        color: var(--muted);
+        font-weight: 500;
+        margin-top: 2px;
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .nav a {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+      }
+
+      .nav a.active,
+      .nav a:hover {
+        background: rgba(47, 211, 106, 0.14);
+        color: var(--ink);
+      }
+
+      .main {
+        flex: 1;
+        padding: 24px 26px 42px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .topbar h1 {
+        margin: 0 0 4px;
+        font-size: clamp(1.5rem, 2.1vw, 2rem);
+      }
+
+      .topbar p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .status {
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: var(--green-soft);
+        color: var(--green);
+        font-size: 0.9rem;
+        border: 1px solid rgba(47, 211, 106, 0.2);
+      }
+
+      .card {
+        background: rgba(15, 23, 18, 0.88);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+        margin-bottom: 16px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+      }
+
+      .card h2 {
+        margin: 0 0 6px;
+        font-size: 1.03rem;
+      }
+
+      .card .subtle {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .field label {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .field input,
+      .field select {
+        background: var(--panel-alt);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 12px;
+        outline: none;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        border-color: rgba(47, 211, 106, 0.4);
+      }
+
+      .toggle-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .toggle-row:last-child {
+        border-bottom: 0;
+      }
+
+      .switch {
+        position: relative;
+        width: 46px;
+        height: 26px;
+        display: inline-block;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        background: #24342b;
+        border-radius: 999px;
+        transition: 0.2s ease;
+      }
+
+      .slider::before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        left: 3px;
+        top: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.2s ease;
+      }
+
+      .switch input:checked + .slider {
+        background: var(--green);
+      }
+
+      .switch input:checked + .slider::before {
+        transform: translateX(20px);
+      }
+
+      .color-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .color-chip {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+      }
+
+      .color-chip.active {
+        border-color: var(--ink);
+      }
+
+      .color-chip.green {
+        background: #2fd36a;
+      }
+      .color-chip.blue {
+        background: #5aa3ff;
+      }
+      .color-chip.orange {
+        background: #ffb86b;
+      }
+      .color-chip.purple {
+        background: #8c7ef5;
+      }
+
+      .range-wrap {
+        margin-top: 8px;
+      }
+
+      .range-wrap input[type="range"] {
+        width: 100%;
+        accent-color: var(--green);
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 16px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background: var(--green);
+        color: #031008;
+      }
+
+      .btn-secondary {
+        background: #1d2b22;
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+
+      .action-btn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        border-radius: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+      }
+
+      .action-btn:hover,
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      @media (max-width: 900px) {
+        .shell {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .nav {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .main {
+          padding: 16px 14px 28px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">SG</div>
+          <div class="brand-name">Smart Grocery <span>Planner</span></div>
+        </div>
+        <nav class="nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="recipes.html">Recipes</a>
+          <a href="pantry.html">Pantry</a>
+          <a href="shooping_list.html">Shopping List</a>
+          <a href="notification.html">Notifications</a>
+          <a class="active" href="settings.html">Settings</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h1>Settings</h1>
+            <p>Fine-tune your experience and manage account preferences.</p>
+          </div>
+          <div class="status" id="statusBanner">
+            All changes are saved locally.
+          </div>
+        </header>
+
+        <section class="card">
+          <h2>General</h2>
+          <p class="subtle">
+            Update your account basics and regional preferences.
+          </p>
+          <div class="grid">
+            <div class="field">
+              <label for="username">Username</label>
+              <input id="username" type="text" value="Ava Green" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" value="ava@example.com" />
+            </div>
+            <div class="field">
+              <label for="language">Language</label>
+              <select id="language">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option>USD</option>
+                <option>EUR</option>
+                <option>GBP</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="timezone">Time Zone</label>
+              <select id="timezone">
+                <option>UTC-05:00</option>
+                <option>UTC+00:00</option>
+                <option>UTC+01:00</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Appearance</h2>
+          <p class="subtle">Control the look and feel of your planner.</p>
+          <div class="toggle-row">
+            <div>
+              <strong>Dark Mode</strong>
+              <div class="subtle">Use the premium dark palette.</div>
+            </div>
+            <label class="switch">
+              <input id="darkMode" type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <strong>Theme Color</strong>
+              <div class="subtle">Pick a highlight color for accents.</div>
+            </div>
+            <div class="color-row" aria-label="Theme color selector">
+              <button
+                class="color-chip green active"
+                data-color="#2fd36a"
+                type="button"
+              ></button>
+              <button
+                class="color-chip blue"
+                data-color="#5aa3ff"
+                type="button"
+              ></button>
+              <button
+                class="color-chip orange"
+                data-color="#ffb86b"
+                type="button"
+              ></button>
+              <button
+                class="color-chip purple"
+                data-color="#8c7ef5"
+                type="button"
+              ></button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fontSize">Font Size</label>
+            <div class="range-wrap">
+              <input id="fontSize" type="range" min="14" max="20" value="16" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Notifications</h2>
+          <p class="subtle">Choose which reminders you want to receive.</p>
+          <div class="toggle-row">
+            <div><strong>Low Stock</strong></div>
+            <label class="switch"
+              ><input type="checkbox" checked /><span class="slider"></span
+            ></label>
+          </div>
+          <div class="toggle-row">
+            <div><strong>Expiry Reminder</strong></div>
+            <label class="switch"
+              ><input type="checkbox" checked /><span class="slider"></span
+            ></label>
+          </div>
+          <div class="toggle-row">
+            <div><strong>Shopping Reminder</strong></div>
+            <label class="switch"
+              ><input type="checkbox" checked /><span class="slider"></span
+            ></label>
+          </div>
+          <div class="toggle-row">
+            <div><strong>Budget Alerts</strong></div>
+            <label class="switch"
+              ><input type="checkbox" checked /><span class="slider"></span
+            ></label>
+          </div>
+          <div class="toggle-row">
+            <div><strong>Email Notifications</strong></div>
+            <label class="switch"
+              ><input type="checkbox" /><span class="slider"></span
+            ></label>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Security</h2>
+          <p class="subtle">
+            Protect your account with strong security settings.
+          </p>
+          <div class="grid">
+            <button class="action-btn" type="button">Change Password</button>
+            <button class="action-btn" type="button">
+              Enable Two-Factor Authentication
+            </button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Data Management</h2>
+          <p class="subtle">Export, restore, or clean up your planner data.</p>
+          <div class="grid">
+            <button class="action-btn" type="button">Export Data</button>
+            <button class="action-btn" type="button">Import Data</button>
+            <button class="action-btn" type="button">Backup Data</button>
+            <button class="action-btn" type="button">Delete Account</button>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button class="btn btn-secondary" id="resetBtn" type="button">
+            Reset
+          </button>
+          <button class="btn btn-primary" id="saveBtn" type="button">
+            Save Changes
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const statusBanner = document.getElementById("statusBanner");
+      const saveBtn = document.getElementById("saveBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const colorChips = document.querySelectorAll(".color-chip");
+      const root = document.documentElement;
+
+      const defaultValues = {
+        username: "Ava Green",
+        email: "ava@example.com",
+        language: "English",
+        currency: "USD",
+        timezone: "UTC-05:00",
+        darkMode: true,
+        fontSize: 16,
+        themeColor: "#2fd36a",
+      };
+
+      function updateStatus(message) {
+        statusBanner.textContent = message;
+      }
+
+      function applyTheme(color) {
+        root.style.setProperty("--green", color);
+        root.style.setProperty("--green-soft", `${color}22`);
+        colorChips.forEach((chip) =>
+          chip.classList.toggle("active", chip.dataset.color === color),
+        );
+      }
+
+      saveBtn.addEventListener("click", () => {
+        updateStatus("Settings saved successfully.");
+      });
+
+      resetBtn.addEventListener("click", () => {
+        document.getElementById("username").value = defaultValues.username;
+        document.getElementById("email").value = defaultValues.email;
+        document.getElementById("language").value = defaultValues.language;
+        document.getElementById("currency").value = defaultValues.currency;
+        document.getElementById("timezone").value = defaultValues.timezone;
+        document.getElementById("darkMode").checked = defaultValues.darkMode;
+        document.getElementById("fontSize").value = defaultValues.fontSize;
+        applyTheme(defaultValues.themeColor);
+        updateStatus("Changes reset to defaults.");
+      });
+
+      colorChips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          applyTheme(chip.dataset.color);
+          updateStatus("Theme updated.");
+        });
+      });
+
+      document.getElementById("fontSize").addEventListener("input", (event) => {
+        document.body.style.fontSize = `${event.target.value}px`;
+      });
+
+      applyTheme(defaultValues.themeColor);
+    </script>
+  </body>
+</html>
