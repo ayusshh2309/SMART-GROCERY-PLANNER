@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Notifications</title>
+    <style>
+      :root {
+        --bg: #07110c;
+        --panel: #0f1712;
+        --panel-2: #131f18;
+        --ink: #f3f8f4;
+        --muted: #8da393;
+        --line: rgba(122, 164, 132, 0.2);
+        --green: #2fd36a;
+        --green-soft: rgba(47, 211, 106, 0.14);
+        --orange: #ff9f43;
+        --orange-soft: rgba(255, 159, 67, 0.16);
+        --red: #ff6b6b;
+        --red-soft: rgba(255, 107, 107, 0.16);
+        --blue: #5aa3ff;
+        --blue-soft: rgba(90, 163, 255, 0.16);
+        --purple: #8c7ef5;
+        --purple-soft: rgba(140, 126, 245, 0.16);
+        --radius: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(
+          circle at top left,
+          #11211a 0%,
+          var(--bg) 45%,
+          #040806 100%
+        );
+        color: var(--ink);
+        font-family: Inter, "Segoe UI", Roboto, sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 20px 48px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+      }
+
+      .title-block h1 {
+        margin: 0 0 4px;
+        font-size: clamp(1.55rem, 2vw, 2rem);
+      }
+
+      .title-block p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 10px 12px;
+        min-width: min(320px, 100%);
+      }
+
+      .search-box input {
+        background: transparent;
+        border: 0;
+        outline: 0;
+        color: var(--ink);
+        width: 100%;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 600;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: var(--green);
+        color: #031008;
+      }
+
+      .btn-ghost {
+        background: var(--panel);
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .filter-btn {
+        background: var(--panel);
+        color: var(--muted);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+      }
+
+      .filter-btn.active {
+        background: var(--green-soft);
+        color: var(--green);
+        border-color: rgba(47, 211, 106, 0.35);
+      }
+
+      .section-card {
+        background: rgba(15, 23, 18, 0.82);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+        margin-bottom: 16px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .badge {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .notification-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .notification-card {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 14px;
+        padding: 14px;
+        border-radius: 14px;
+        background: var(--panel-2);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        transition:
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .notification-card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(47, 211, 106, 0.24);
+      }
+
+      .notification-card.read {
+        opacity: 0.82;
+      }
+
+      .icon-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-size: 1.15rem;
+      }
+
+      .icon-low {
+        background: var(--red-soft);
+      }
+      .icon-expire {
+        background: var(--orange-soft);
+      }
+      .icon-reminder {
+        background: var(--green-soft);
+      }
+      .icon-budget {
+        background: var(--blue-soft);
+      }
+      .icon-recipe {
+        background: var(--purple-soft);
+      }
+
+      .content h3 {
+        margin: 0 0 4px;
+        font-size: 0.98rem;
+      }
+
+      .content p {
+        margin: 0 0 6px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .action-btn {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        padding: 7px 10px;
+        border-radius: 999px;
+      }
+
+      .action-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--ink);
+      }
+
+      .action-btn.read-btn {
+        color: var(--green);
+      }
+
+      .action-btn.delete-btn {
+        color: #ff9a9a;
+      }
+
+      .empty {
+        padding: 22px;
+        text-align: center;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+      }
+
+      @media (max-width: 780px) {
+        .notification-card {
+          grid-template-columns: auto 1fr;
+        }
+
+        .actions {
+          grid-column: 2;
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          padding: 16px 14px 32px;
+        }
+        .section-card {
+          padding: 14px;
+        }
+        .notification-card {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="title-block">
+          <h1>Notifications</h1>
+          <p>Stay on top of inventory, budgets, and meal ideas.</p>
+        </div>
+        <div class="toolbar">
+          <label class="search-box" for="searchInput">
+            <span>🔎</span>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search notifications"
+            />
+          </label>
+          <button id="clearAllBtn" class="btn btn-primary">Clear All</button>
+        </div>
+      </header>
+
+      <div class="filters" role="tablist" aria-label="Notification filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="unread">Unread</button>
+        <button class="filter-btn" data-filter="read">Read</button>
+        <button class="filter-btn" data-filter="important">Important</button>
+      </div>
+
+      <section id="notifications"></section>
+    </main>
+
+    <script>
+      const notifications = [
+        {
+          id: 1,
+          title: "Low Stock",
+          description:
+            "Milk and spinach are running low. Restock soon to avoid last-minute gaps.",
+          date: "Today",
+          time: "08:20 AM",
+          icon: "🔴",
+          type: "low",
+          important: true,
+          read: false,
+        },
+        {
+          id: 2,
+          title: "Expiring Soon",
+          description:
+            "Greek yogurt expires in 2 days. Use it in breakfast recipes this week.",
+          date: "Today",
+          time: "10:05 AM",
+          icon: "🟠",
+          type: "expire",
+          important: true,
+          read: false,
+        },
+        {
+          id: 3,
+          title: "Shopping Reminder",
+          description:
+            "Your weekly shopping list is ready. Review it before heading out.",
+          date: "Yesterday",
+          time: "06:40 PM",
+          icon: "🟢",
+          type: "reminder",
+          important: false,
+          read: true,
+        },
+        {
+          id: 4,
+          title: "Budget Alert",
+          description: "You are 12% over your grocery budget for this month.",
+          date: "Yesterday",
+          time: "08:15 PM",
+          icon: "🔵",
+          type: "budget",
+          important: true,
+          read: false,
+        },
+        {
+          id: 5,
+          title: "Recipe Suggestion",
+          description:
+            "Try a quick tomato pasta using ingredients already in your pantry.",
+          date: "Earlier",
+          time: "11:30 AM",
+          icon: "🟣",
+          type: "recipe",
+          important: false,
+          read: true,
+        },
+      ];
+
+      const state = {
+        filter: "all",
+        search: "",
+      };
+
+      const container = document.getElementById("notifications");
+      const searchInput = document.getElementById("searchInput");
+      const clearAllBtn = document.getElementById("clearAllBtn");
+      const filterButtons = document.querySelectorAll(".filter-btn");
+
+      function getFilteredNotifications() {
+        return notifications.filter((item) => {
+          const matchesFilter =
+            state.filter === "all" ||
+            (state.filter === "unread" && !item.read) ||
+            (state.filter === "read" && item.read) ||
+            (state.filter === "important" && item.important);
+
+          const query = state.search.trim().toLowerCase();
+          const matchesSearch =
+            !query ||
+            item.title.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query);
+
+          return matchesFilter && matchesSearch;
+        });
+      }
+
+      function render() {
+        const groups = ["Today", "Yesterday", "Earlier"];
+        const visible = getFilteredNotifications();
+        const grouped = groups.map((group) => ({
+          group,
+          items: visible.filter((item) => item.date === group),
+        }));
+
+        if (!visible.length) {
+          container.innerHTML =
+            '<div class="empty">No notifications match this view.</div>';
+          return;
+        }
+
+        container.innerHTML = grouped
+          .filter((group) => group.items.length)
+          .map(
+            (group) => `
+            <section class="section-card">
+              <div class="section-title">
+                <h2>${group.group}</h2>
+                <span class="badge">${group.items.length} item${group.items.length > 1 ? "s" : ""}</span>
+              </div>
+              <div class="notification-list">
+                ${group.items
+                  .map(
+                    (item) => `
+                  <article class="notification-card ${item.read ? "read" : ""}">
+                    <div class="icon-wrap icon-${item.type}">${item.icon}</div>
+                    <div class="content">
+                      <h3>${item.title}</h3>
+                      <p>${item.description}</p>
+                      <div class="meta">
+                        <span>${item.date}</span>
+                        <span>${item.time}</span>
+                      </div>
+                    </div>
+                    <div class="actions">
+                      <button class="action-btn read-btn" data-action="read" data-id="${item.id}">
+                        ${item.read ? "Read" : "Mark as Read"}
+                      </button>
+                      <button class="action-btn delete-btn" data-action="delete" data-id="${item.id}">Delete</button>
+                    </div>
+                  </article>
+                `,
+                  )
+                  .join("")}
+              </div>
+            </section>
+          `,
+          )
+          .join("");
+      }
+
+      function handleAction(event) {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const id = Number(button.dataset.id);
+        const action = button.dataset.action;
+
+        const item = notifications.find((entry) => entry.id === id);
+        if (!item) return;
+
+        if (action === "read") {
+          item.read = true;
+        } else if (action === "delete") {
+          const index = notifications.findIndex((entry) => entry.id === id);
+          if (index !== -1) notifications.splice(index, 1);
+        }
+
+        render();
+      }
+
+      searchInput.addEventListener("input", (event) => {
+        state.search = event.target.value;
+        render();
+      });
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterButtons.forEach((button) => button.classList.remove("active"));
+          btn.classList.add("active");
+          state.filter = btn.dataset.filter;
+          render();
+        });
+      });
+
+      clearAllBtn.addEventListener("click", () => {
+        notifications.splice(0, notifications.length);
+        render();
+      });
+
+      container.addEventListener("click", handleAction);
+      render();
+    </script>
+  </body>
+</html>

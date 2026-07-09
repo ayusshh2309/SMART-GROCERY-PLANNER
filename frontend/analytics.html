@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Analytics</title>
+    <style>
+      :root {
+        --bg: #07120d;
+        --panel: #101c16;
+        --panel-2: #13231b;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f4fff7;
+        --muted: #8ea79a;
+        --accent: #2f9d5c;
+        --accent-2: #37b66a;
+        --accent-soft: rgba(47, 157, 92, 0.18);
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+        background: radial-gradient(
+          circle at top left,
+          #12271a 0%,
+          var(--bg) 45%,
+          #060b08 100%
+        );
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .app-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        background: rgba(7, 15, 10, 0.95);
+        border-right: 1px solid var(--border);
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      }
+
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--muted);
+        transition: all 0.25s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background: var(--accent-soft);
+        color: var(--text);
+        transform: translateX(2px);
+      }
+
+      .sidebar-card {
+        margin-top: auto;
+        padding: 16px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(47, 157, 92, 0.2),
+          rgba(12, 24, 18, 0.85)
+        );
+        border: 1px solid rgba(47, 157, 92, 0.25);
+      }
+
+      .main {
+        padding: 24px 28px 36px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 22px;
+      }
+
+      .page-title h1 {
+        margin: 0 0 5px;
+        font-size: 1.7rem;
+      }
+
+      .page-title p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .card {
+        background: linear-gradient(
+          145deg,
+          rgba(16, 28, 22, 0.98),
+          rgba(11, 21, 16, 0.98)
+        );
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(47, 157, 92, 0.35);
+      }
+
+      .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .icon-badge {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(47, 157, 92, 0.16);
+        font-size: 1.1rem;
+      }
+
+      .card .label {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .card .value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+      }
+
+      .panel {
+        background: linear-gradient(
+          145deg,
+          rgba(16, 28, 22, 0.98),
+          rgba(11, 21, 16, 0.98)
+        );
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .panel h3 {
+        margin: 0 0 12px;
+        font-size: 1rem;
+      }
+
+      .chart-placeholder {
+        min-height: 200px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(47, 157, 92, 0.12),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px dashed rgba(47, 157, 92, 0.25);
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .list-item:last-child {
+        border-bottom: none;
+      }
+
+      .pill {
+        background: rgba(47, 157, 92, 0.16);
+        color: #7ee49b;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+      }
+
+      .insight-card {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(47, 157, 92, 0.16),
+          rgba(255, 255, 255, 0.03)
+        );
+        border: 1px solid rgba(47, 157, 92, 0.2);
+      }
+
+      .insight-card h4 {
+        margin: 0 0 6px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 960px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(180px, 1fr));
+        }
+        .dashboard-grid,
+        .panel-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .main {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">🛒</div>
+          <div>Smart Grocery</div>
+        </div>
+
+        <nav class="nav-links">
+          <a class="nav-link" href="dashboard.html">🏠 Dashboard</a>
+          <a class="nav-link" href="pantry.html">🧺 Pantry</a>
+          <a class="nav-link" href="shooping_list.html">🛒 Shopping List</a>
+          <a class="nav-link" href="expenses.html">💰 Expenses</a>
+          <a class="nav-link active" href="analytics.html">📊 Analytics</a>
+          <a class="nav-link" href="recipes.html">📦 Recipes</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <strong>Premium insights</strong>
+          <p class="muted" style="margin: 6px 0 0">
+            Track waste, spending, and stock health in one place.
+          </p>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="topbar">
+          <div class="page-title">
+            <h1>Analytics</h1>
+            <p>Live insights for pantry health and spending patterns.</p>
+          </div>
+        </div>
+
+        <section class="summary-grid">
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <div class="label">Pantry Items</div>
+                <div class="value">128</div>
+              </div>
+              <div class="icon-badge">📦</div>
+            </div>
+            <div class="muted">+12 from last week</div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <div class="label">Monthly Expense</div>
+                <div class="value">₹4,250</div>
+              </div>
+              <div class="icon-badge">💸</div>
+            </div>
+            <div class="muted">↓ 8% from last month</div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <div class="label">Food Waste</div>
+                <div class="value">3.2 kg</div>
+              </div>
+              <div class="icon-badge">♻️</div>
+            </div>
+            <div class="muted">Reduced by 14%</div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <div class="label">Money Saved</div>
+                <div class="value">₹1,180</div>
+              </div>
+              <div class="icon-badge">💰</div>
+            </div>
+            <div class="muted">Using smart planning</div>
+          </article>
+        </section>
+
+        <section class="dashboard-grid">
+          <div class="panel">
+            <h3>Pantry Distribution</h3>
+            <div class="chart-placeholder">Pie chart placeholder</div>
+          </div>
+          <div class="panel">
+            <h3>Monthly Spending</h3>
+            <div class="chart-placeholder">Bar chart placeholder</div>
+          </div>
+        </section>
+
+        <section class="panel-grid">
+          <div class="panel">
+            <h3>Pantry Usage Trend</h3>
+            <div class="chart-placeholder">Line chart placeholder</div>
+          </div>
+          <div class="panel">
+            <h3>Top Purchased Items</h3>
+            <div class="list">
+              <div class="list-item">
+                <span>Milk</span><span class="pill">12 purchases</span>
+              </div>
+              <div class="list-item">
+                <span>Rice</span><span class="pill">10 purchases</span>
+              </div>
+              <div class="list-item">
+                <span>Tomatoes</span><span class="pill">9 purchases</span>
+              </div>
+              <div class="list-item">
+                <span>Paneer</span><span class="pill">8 purchases</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-grid">
+          <div class="panel">
+            <h3>Most Expensive Categories</h3>
+            <div class="list">
+              <div class="list-item">
+                <span>Meat</span><span class="pill">₹1,240</span>
+              </div>
+              <div class="list-item">
+                <span>Dairy</span><span class="pill">₹870</span>
+              </div>
+              <div class="list-item">
+                <span>Frozen Food</span><span class="pill">₹650</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Low Stock Analysis</h3>
+            <div class="list">
+              <div class="list-item">
+                <span>Cooking Oil</span><span class="pill">Low stock</span>
+              </div>
+              <div class="list-item">
+                <span>Toor Dal</span><span class="pill">Low stock</span>
+              </div>
+              <div class="list-item">
+                <span>Sugar</span><span class="pill">Very low</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-grid">
+          <div class="panel">
+            <h3>Expiring Soon Analysis</h3>
+            <div class="list">
+              <div class="list-item">
+                <span>Yogurt</span><span class="pill">1 day left</span>
+              </div>
+              <div class="list-item">
+                <span>Tomatoes</span><span class="pill">2 days left</span>
+              </div>
+              <div class="list-item">
+                <span>Paneer</span><span class="pill">2 days left</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>AI Insights</h3>
+            <div class="insight-card">
+              <h4>Suggested action</h4>
+              <p class="muted">
+                Use the remaining spinach and yogurt this week to reduce waste
+                and save around ₹320.
+              </p>
+            </div>
+            <div class="insight-card">
+              <h4>Prediction</h4>
+              <p class="muted">
+                Milk and bread demand is likely to spike next weekend, so stock
+                up early.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
