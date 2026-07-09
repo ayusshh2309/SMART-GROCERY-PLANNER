@@ -1,313 +1,789 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Grocery Planner — Help & Support</title>
-<style>
-  :root{
-    --bg:#0E1512;
-    --paper:#161F1A;
-    --paper-hover:#1B261F;
-    --ink:#EAF0EA;
-    --ink-soft:#8FA093;
-    --line:#243128;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Grocery Planner — Help & Support</title>
+    <style>
+      :root {
+        --bg: #0e1512;
+        --paper: #161f1a;
+        --paper-hover: #1b261f;
+        --ink: #eaf0ea;
+        --ink-soft: #8fa093;
+        --line: #243128;
 
-    --sidebar:#0A100D;
-    --sidebar-text:#8FA093;
-    --sidebar-active:#1B2C22;
+        --sidebar: #0a100d;
+        --sidebar-text: #8fa093;
+        --sidebar-active: #1b2c22;
 
-    --herb:#3FAE68;
-    --herb-light:rgba(63,174,104,0.14);
-    --amber:#E0A23B;
-    --amber-light:rgba(224,162,59,0.14);
-    --coral:#E06B57;
-    --coral-light:rgba(224,107,87,0.14);
-    --blue:#5B8DEF;
-    --blue-light:rgba(91,141,239,0.14);
-    --plum:#9B7FD4;
-    --plum-light:rgba(155,127,212,0.14);
+        --herb: #3fae68;
+        --herb-light: rgba(63, 174, 104, 0.14);
+        --amber: #e0a23b;
+        --amber-light: rgba(224, 162, 59, 0.14);
+        --coral: #e06b57;
+        --coral-light: rgba(224, 107, 87, 0.14);
+        --blue: #5b8def;
+        --blue-light: rgba(91, 141, 239, 0.14);
+        --plum: #9b7fd4;
+        --plum-light: rgba(155, 127, 212, 0.14);
 
-    --radius:16px;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:ui-sans-serif,-apple-system,'Segoe UI',Roboto,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{font-family:ui-sans-serif,sans-serif; font-weight:700; letter-spacing:-0.01em; margin:0;}
-  button,input,textarea{font-family:inherit;}
-  :focus-visible{outline:2px solid var(--herb); outline-offset:2px;}
+        --radius: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      button,
+      input,
+      textarea {
+        font-family: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--herb);
+        outline-offset: 2px;
+      }
 
-  .shell{display:flex; min-height:100vh;}
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
 
-  /* Sidebar */
-  .sidebar{width:230px; flex-shrink:0; background:var(--sidebar); color:var(--sidebar-text); display:flex; flex-direction:column; padding:18px 14px; border-right:1px solid var(--line);}
-  .brand{display:flex; align-items:center; gap:9px; padding:6px 6px 22px;}
-  .brand .mark{width:34px;height:34px;border-radius:9px;background:var(--herb);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .brand .name{color:#fff; font-size:14px; line-height:1.25;}
-  .brand .name span{display:block; font-size:11px; color:var(--sidebar-text); font-weight:400;}
-  nav{display:flex; flex-direction:column; gap:2px;}
-  .nav-item{display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:9px; font-size:13.5px; font-weight:500; color:var(--sidebar-text); border:none; background:none; text-align:left; width:100%;}
-  .nav-item svg{flex-shrink:0; opacity:0.85;}
-  .nav-item:hover{background:#141F19; color:#fff;}
-  .nav-item.active{background:var(--sidebar-active); color:#fff;}
-  .nav-item.active svg{opacity:1; color:#7CD49B;}
+      /* Sidebar */
+      .sidebar {
+        width: 230px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        display: flex;
+        flex-direction: column;
+        padding: 18px 14px;
+        border-right: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 6px 6px 22px;
+      }
+      .brand .mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: var(--herb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .brand .name {
+        color: #fff;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .brand .name span {
+        display: block;
+        font-size: 11px;
+        color: var(--sidebar-text);
+        font-weight: 400;
+      }
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--sidebar-text);
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+      }
+      .nav-item svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+      .nav-item:hover {
+        background: #141f19;
+        color: #fff;
+      }
+      .nav-item.active {
+        background: var(--sidebar-active);
+        color: #fff;
+      }
+      .nav-item.active svg {
+        opacity: 1;
+        color: #7cd49b;
+      }
 
-  /* Main */
-  .main{flex:1; min-width:0; padding:24px 28px 60px; max-width:980px;}
-  .topbar{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px; flex-wrap:wrap;}
-  .topbar h1{font-size:22px;}
-  .topbar .sub{font-size:13px; color:var(--ink-soft); margin-top:4px;}
-  .bug-btn{
-    display:flex; align-items:center; gap:7px; background:var(--coral-light); color:var(--coral);
-    border:1px solid rgba(224,107,87,0.3); border-radius:10px; padding:10px 16px; font-size:13.5px; font-weight:600;
-    cursor:pointer; flex-shrink:0;
-  }
-  .bug-btn:hover{background:rgba(224,107,87,0.22);}
+      /* Main */
+      .main {
+        flex: 1;
+        min-width: 0;
+        padding: 24px 28px 60px;
+        max-width: 980px;
+      }
+      .topbar {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .topbar h1 {
+        font-size: 22px;
+      }
+      .topbar .sub {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin-top: 4px;
+      }
+      .bug-btn {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: var(--coral-light);
+        color: var(--coral);
+        border: 1px solid rgba(224, 107, 87, 0.3);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .bug-btn:hover {
+        background: rgba(224, 107, 87, 0.22);
+      }
 
-  /* Search bar */
-  .search-wrap{margin-bottom:26px;}
-  .search-bar{
-    display:flex; align-items:center; gap:10px;
-    background:var(--paper); border:1px solid var(--line); border-radius:14px;
-    padding:14px 18px;
-  }
-  .search-bar svg{color:var(--ink-soft); flex-shrink:0;}
-  .search-bar input{
-    flex:1; border:none; outline:none; background:none; color:var(--ink);
-    font-size:15px;
-  }
-  .search-bar input::placeholder{color:var(--ink-soft);}
+      /* Search bar */
+      .search-wrap {
+        margin-bottom: 26px;
+      }
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 18px;
+      }
+      .search-bar svg {
+        color: var(--ink-soft);
+        flex-shrink: 0;
+      }
+      .search-bar input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: none;
+        color: var(--ink);
+        font-size: 15px;
+      }
+      .search-bar input::placeholder {
+        color: var(--ink-soft);
+      }
 
-  .section-title{font-size:15px; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
-  section{margin-bottom:26px;}
+      .section-title {
+        font-size: 15px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      section {
+        margin-bottom: 26px;
+      }
 
-  /* FAQ accordion */
-  .faq-list{display:flex; flex-direction:column; gap:10px;}
-  .faq-item{background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
-  .faq-q{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding:15px 18px; cursor:pointer; font-size:14px; font-weight:600;
-  }
-  .faq-q:hover{background:var(--paper-hover);}
-  .faq-q .chevron{transition:transform .2s ease; color:var(--ink-soft); flex-shrink:0;}
-  .faq-item.open .faq-q .chevron{transform:rotate(180deg);}
-  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
-  .faq-item.open .faq-a{max-height:220px;}
-  .faq-a-inner{padding:0 18px 16px; font-size:13.5px; color:var(--ink-soft); line-height:1.6;}
-  .faq-empty{padding:24px; text-align:center; color:var(--ink-soft); font-size:13.5px;}
+      /* FAQ accordion */
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .faq-item {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .faq-q {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 15px 18px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .faq-q:hover {
+        background: var(--paper-hover);
+      }
+      .faq-q .chevron {
+        transition: transform 0.2s ease;
+        color: var(--ink-soft);
+        flex-shrink: 0;
+      }
+      .faq-item.open .faq-q .chevron {
+        transform: rotate(180deg);
+      }
+      .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease;
+      }
+      .faq-item.open .faq-a {
+        max-height: 220px;
+      }
+      .faq-a-inner {
+        padding: 0 18px 16px;
+        font-size: 13.5px;
+        color: var(--ink-soft);
+        line-height: 1.6;
+      }
+      .faq-empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--ink-soft);
+        font-size: 13.5px;
+      }
 
-  /* Support options */
-  .support-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
-  .support-card{
-    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
-    padding:18px; cursor:pointer; text-align:left;
-  }
-  .support-card:hover{border-color:var(--herb);}
-  .support-card .icon{width:38px;height:38px;border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
-  .support-card h3{font-size:14px; margin-bottom:4px;}
-  .support-card p{font-size:12px; color:var(--ink-soft); margin:0;}
+      /* Support options */
+      .support-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .support-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+        cursor: pointer;
+        text-align: left;
+      }
+      .support-card:hover {
+        border-color: var(--herb);
+      }
+      .support-card .icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .support-card h3 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .support-card p {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin: 0;
+      }
 
-  /* Tutorials */
-  .tut-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
-  .tut-card{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:18px; cursor:pointer;}
-  .tut-card:hover{border-color:var(--herb);}
-  .tut-thumb{width:100%; height:80px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; font-size:26px;}
-  .tut-card h3{font-size:13.5px; margin-bottom:3px;}
-  .tut-card p{font-size:11.5px; color:var(--ink-soft); margin:0;}
+      /* Tutorials */
+      .tut-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      .tut-card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+        cursor: pointer;
+      }
+      .tut-card:hover {
+        border-color: var(--herb);
+      }
+      .tut-thumb {
+        width: 100%;
+        height: 80px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 26px;
+      }
+      .tut-card h3 {
+        font-size: 13.5px;
+        margin-bottom: 3px;
+      }
+      .tut-card p {
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        margin: 0;
+      }
 
-  /* Feedback form + contact card */
-  .two-col{display:grid; grid-template-columns:1.3fr 0.7fr; gap:16px; align-items:start;}
-  .panel{background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
-  .field{margin-bottom:14px;}
-  .field label{display:block; font-size:12.5px; font-weight:600; margin-bottom:6px;}
-  .field input, .field textarea{
-    width:100%; padding:10px 12px; border-radius:9px; border:1px solid var(--line);
-    background:var(--bg); color:var(--ink); font-size:13.5px; outline:none; resize:vertical;
-  }
-  .field input:focus, .field textarea:focus{border-color:var(--herb);}
-  .submit-btn{
-    background:var(--herb); color:#fff; border:none; border-radius:10px;
-    padding:11px 20px; font-size:13.5px; font-weight:600; cursor:pointer;
-  }
-  .submit-btn:hover{background:#379A5C;}
-  .form-success{
-    display:none; align-items:center; gap:8px; background:var(--herb-light); color:var(--herb);
-    border:1px solid rgba(63,174,104,0.3); border-radius:10px; padding:12px 14px; font-size:13px; margin-bottom:14px;
-  }
-  .form-success.show{display:flex;}
+      /* Feedback form + contact card */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .panel {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 12.5px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .field input,
+      .field textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 9px;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--ink);
+        font-size: 13.5px;
+        outline: none;
+        resize: vertical;
+      }
+      .field input:focus,
+      .field textarea:focus {
+        border-color: var(--herb);
+      }
+      .submit-btn {
+        background: var(--herb);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 11px 20px;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .submit-btn:hover {
+        background: #379a5c;
+      }
+      .form-success {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        background: var(--herb-light);
+        color: var(--herb);
+        border: 1px solid rgba(63, 174, 104, 0.3);
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .form-success.show {
+        display: flex;
+      }
 
-  .contact-card .contact-row{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line);}
-  .contact-card .contact-row:last-child{border-bottom:none;}
-  .contact-icon{width:34px;height:34px;border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .contact-row .lbl{font-size:11px; color:var(--ink-soft);}
-  .contact-row .val{font-size:13px; font-weight:600;}
-  .hours-note{font-size:12px; color:var(--ink-soft); margin-top:14px; line-height:1.5;}
+      .contact-card .contact-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .contact-card .contact-row:last-child {
+        border-bottom: none;
+      }
+      .contact-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .contact-row .lbl {
+        font-size: 11px;
+        color: var(--ink-soft);
+      }
+      .contact-row .val {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .hours-note {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-top: 14px;
+        line-height: 1.5;
+      }
 
-  @media (max-width: 900px){
-    .sidebar{display:none;}
-    .support-grid, .tut-grid{grid-template-columns:1fr 1fr;}
-    .two-col{grid-template-columns:1fr;}
-  }
-  @media (max-width: 560px){
-    .support-grid, .tut-grid{grid-template-columns:1fr;}
-  }
-</style>
-</head>
-<body>
-<div class="shell">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-      <div class="name">Smart Grocery<span>Planner</span></div>
-    </div>
-    <nav id="navList"></nav>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-    <div class="topbar">
-      <div>
-        <h1>Help & Support</h1>
-        <div class="sub">Find answers, get in touch, or learn how to use the app.</div>
-      </div>
-      <button class="bug-btn" onclick="reportBug()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="8" height="14" rx="4"/><path d="M8 10H4M8 16H4M16 10h4M16 16h4M12 6V3M9 3l1.5 2M15 3l-1.5 2"/></svg>
-        Report a bug
-      </button>
-    </div>
-
-    <div class="search-wrap">
-      <div class="search-bar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search for help...">
-      </div>
-    </div>
-
-    <!-- FAQ -->
-    <section>
-      <div class="section-title">❓ Frequently asked questions</div>
-      <div class="faq-list" id="faqList"></div>
-    </section>
-
-    <!-- Support options -->
-    <section>
-      <div class="section-title">💬 Get in touch</div>
-      <div class="support-grid" id="supportGrid"></div>
-    </section>
-
-    <!-- Tutorials -->
-    <section>
-      <div class="section-title">🎓 Tutorials & guides</div>
-      <div class="tut-grid" id="tutGrid"></div>
-    </section>
-
-    <!-- Feedback + contact -->
-    <section>
-      <div class="section-title">📝 Send feedback</div>
-      <div class="two-col">
-        <div class="panel">
-          <div class="form-success" id="formSuccess">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            Thanks — your feedback has been sent!
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .support-grid,
+        .tut-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 560px) {
+        .support-grid,
+        .tut-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
           </div>
-          <form id="feedbackForm">
-            <div class="field"><label for="fbName">Name</label><input type="text" id="fbName" required placeholder="Your name"></div>
-            <div class="field"><label for="fbEmail">Email</label><input type="email" id="fbEmail" required placeholder="you@example.com"></div>
-            <div class="field"><label for="fbMessage">Message</label><textarea id="fbMessage" rows="4" required placeholder="Tell us what's on your mind..."></textarea></div>
-            <button type="submit" class="submit-btn">Submit feedback</button>
-          </form>
+          <div class="name">Smart Grocery<span>Planner</span></div>
+        </div>
+        <nav id="navList"></nav>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+        <div class="topbar">
+          <div>
+            <h1>Help & Support</h1>
+            <div class="sub">
+              Find answers, get in touch, or learn how to use the app.
+            </div>
+          </div>
+          <button class="bug-btn" onclick="reportBug()">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="8" y="6" width="8" height="14" rx="4" />
+              <path
+                d="M8 10H4M8 16H4M16 10h4M16 16h4M12 6V3M9 3l1.5 2M15 3l-1.5 2"
+              />
+            </svg>
+            Report a bug
+          </button>
         </div>
 
-        <div class="panel contact-card">
-          <div class="section-title" style="margin-bottom:12px;">Contact information</div>
-          <div id="contactList"></div>
-          <div class="hours-note">Support hours: Mon–Sat, 9 AM – 8 PM IST. We typically respond within 24 hours.</div>
+        <div class="search-wrap">
+          <div class="search-bar">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search for help..."
+            />
+          </div>
         </div>
-      </div>
-    </section>
 
-  </main>
-</div>
+        <!-- FAQ -->
+        <section>
+          <div class="section-title">❓ Frequently asked questions</div>
+          <div class="faq-list" id="faqList"></div>
+        </section>
 
-<script>
-  // ===================== Nav =====================
-  const navItems = [
-    { label:"Dashboard", icon:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
-    { label:"Pantry", icon:'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>' },
-    { label:"Shopping list", icon:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>' },
-    { label:"Expenses", icon:'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' },
-    { label:"Categories", icon:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>' },
-    { label:"Analytics", icon:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>' },
-    { label:"Notifications", icon:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>' },
-    { label:"Profile", icon:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
-    { label:"Settings", icon:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>' },
-    { label:"Help & Support", active:true, icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-  ];
-  document.getElementById('navList').innerHTML = navItems.map(n => `
-    <button class="nav-item ${n.active?'active':''}">
+        <!-- Support options -->
+        <section>
+          <div class="section-title">💬 Get in touch</div>
+          <div class="support-grid" id="supportGrid"></div>
+        </section>
+
+        <!-- Tutorials -->
+        <section>
+          <div class="section-title">🎓 Tutorials & guides</div>
+          <div class="tut-grid" id="tutGrid"></div>
+        </section>
+
+        <!-- Feedback + contact -->
+        <section>
+          <div class="section-title">📝 Send feedback</div>
+          <div class="two-col">
+            <div class="panel">
+              <div class="form-success" id="formSuccess">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                Thanks — your feedback has been sent!
+              </div>
+              <form id="feedbackForm">
+                <div class="field">
+                  <label for="fbName">Name</label
+                  ><input
+                    type="text"
+                    id="fbName"
+                    required
+                    placeholder="Your name"
+                  />
+                </div>
+                <div class="field">
+                  <label for="fbEmail">Email</label
+                  ><input
+                    type="email"
+                    id="fbEmail"
+                    required
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div class="field">
+                  <label for="fbMessage">Message</label
+                  ><textarea
+                    id="fbMessage"
+                    rows="4"
+                    required
+                    placeholder="Tell us what's on your mind..."
+                  ></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                  Submit feedback
+                </button>
+              </form>
+            </div>
+
+            <div class="panel contact-card">
+              <div class="section-title" style="margin-bottom: 12px">
+                Contact information
+              </div>
+              <div id="contactList"></div>
+              <div class="hours-note">
+                Support hours: Mon–Sat, 9 AM – 8 PM IST. We typically respond
+                within 24 hours.
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // ===================== Nav =====================
+      const navItems = [
+        {
+          label: "Dashboard",
+          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        },
+        {
+          label: "Pantry",
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        },
+        {
+          label: "Shopping list",
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          label: "Expenses",
+          icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        {
+          label: "Categories",
+          icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+        },
+        {
+          label: "Analytics",
+          icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        },
+        {
+          label: "Notifications",
+          icon: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+        },
+        {
+          label: "Profile",
+          icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        },
+        {
+          label: "Settings",
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+        },
+        {
+          label: "Help & Support",
+          active: true,
+          icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+        },
+      ];
+      document.getElementById("navList").innerHTML = navItems
+        .map(
+          (n) => `
+    <button class="nav-item ${n.active ? "active" : ""}">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
       ${n.label}
-    </button>`).join('');
+    </button>`,
+        )
+        .join("");
 
-  // ===================== FAQ data =====================
-  const faqs = [
-    { q:"How do I add pantry items?", a:"Go to the Pantry page and click \"Add item\" in the top right. Fill in the name, quantity, category, and purchase/expiry dates, then save. You can also scan a receipt or barcode from the same page for faster entry." },
-    { q:"How do I delete items?", a:"On the Pantry or Shopping List page, hover over any item row and click the trash icon on the right. You'll be asked to confirm before it's permanently removed." },
-    { q:"How do notifications work?", a:"You'll get alerts when an item is expiring soon, running low, or when a watched product drops in price. Manage which alerts you receive from the Notifications page or Settings." },
-    { q:"How do shopping lists work?", a:"Your shopping list auto-fills with low-stock pantry items and missing recipe ingredients. You can also add items manually, check them off as you shop, and clear purchased items once you're done." },
-    { q:"How do I reset my account?", a:"Go to Settings → Account → Reset account. This clears your pantry, shopping list, and expense history but keeps your login. This action can't be undone, so we'll ask you to confirm first." },
-  ];
-  let activeFaqIndex = null;
+      // ===================== FAQ data =====================
+      const faqs = [
+        {
+          q: "How do I add pantry items?",
+          a: 'Go to the Pantry page and click "Add item" in the top right. Fill in the name, quantity, category, and purchase/expiry dates, then save. You can also scan a receipt or barcode from the same page for faster entry.',
+        },
+        {
+          q: "How do I delete items?",
+          a: "On the Pantry or Shopping List page, hover over any item row and click the trash icon on the right. You'll be asked to confirm before it's permanently removed.",
+        },
+        {
+          q: "How do notifications work?",
+          a: "You'll get alerts when an item is expiring soon, running low, or when a watched product drops in price. Manage which alerts you receive from the Notifications page or Settings.",
+        },
+        {
+          q: "How do shopping lists work?",
+          a: "Your shopping list auto-fills with low-stock pantry items and missing recipe ingredients. You can also add items manually, check them off as you shop, and clear purchased items once you're done.",
+        },
+        {
+          q: "How do I reset my account?",
+          a: "Go to Settings → Account → Reset account. This clears your pantry, shopping list, and expense history but keeps your login. This action can't be undone, so we'll ask you to confirm first.",
+        },
+      ];
+      let activeFaqIndex = null;
 
-  function renderFaqs(filter = ""){
-    const term = filter.trim().toLowerCase();
-    const filtered = faqs.filter(f => f.q.toLowerCase().includes(term) || f.a.toLowerCase().includes(term));
-    const list = document.getElementById('faqList');
+      function renderFaqs(filter = "") {
+        const term = filter.trim().toLowerCase();
+        const filtered = faqs.filter(
+          (f) =>
+            f.q.toLowerCase().includes(term) ||
+            f.a.toLowerCase().includes(term),
+        );
+        const list = document.getElementById("faqList");
 
-    if (filtered.length === 0){
-      list.innerHTML = `<div class="faq-empty">No results for "${filter}". Try a different search, or use the contact options below.</div>`;
-      return;
-    }
+        if (filtered.length === 0) {
+          list.innerHTML = `<div class="faq-empty">No results for "${filter}". Try a different search, or use the contact options below.</div>`;
+          return;
+        }
 
-    list.innerHTML = filtered.map((f) => {
-      const realIndex = faqs.indexOf(f);
-      const isOpen = realIndex === activeFaqIndex;
-      return `
-      <div class="faq-item ${isOpen ? 'open' : ''}">
+        list.innerHTML = filtered
+          .map((f) => {
+            const realIndex = faqs.indexOf(f);
+            const isOpen = realIndex === activeFaqIndex;
+            return `
+      <div class="faq-item ${isOpen ? "open" : ""}">
         <div class="faq-q" onclick="toggleFaq(${realIndex})">
           ${f.q}
           <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
       </div>`;
-    }).join('');
-  }
-  function toggleFaq(i){
-    activeFaqIndex = (activeFaqIndex === i) ? null : i;
-    renderFaqs(document.getElementById('searchInput').value);
-  }
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-    renderFaqs(e.target.value);
-  });
+          })
+          .join("");
+      }
+      function toggleFaq(i) {
+        activeFaqIndex = activeFaqIndex === i ? null : i;
+        renderFaqs(document.getElementById("searchInput").value);
+      }
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        renderFaqs(e.target.value);
+      });
 
-  // ===================== Support options =====================
-  const supportOptions = [
-    { title:"Email support", desc:"support@smartgroceryplanner.app", bg:"var(--blue-light)", fg:"var(--blue)",
-      icon:'<path d="M4 4h16v16H4z" fill="none"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
-      action:() => window.location.href = "mailto:support@smartgroceryplanner.app" },
-    { title:"Live chat", desc:"Chat with our team, avg. reply in 2 min", bg:"var(--herb-light)", fg:"var(--herb)",
-      icon:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
-      action:() => alert('Would open live chat widget.') },
-    { title:"Phone support", desc:"+91 1800-123-4567 (toll-free)", bg:"var(--amber-light)", fg:"var(--amber)",
-      icon:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
-      action:() => window.location.href = "tel:+9118001234567" },
-  ];
-  document.getElementById('supportGrid').innerHTML = supportOptions.map((s, i) => `
+      // ===================== Support options =====================
+      const supportOptions = [
+        {
+          title: "Email support",
+          desc: "support@smartgroceryplanner.app",
+          bg: "var(--blue-light)",
+          fg: "var(--blue)",
+          icon: '<path d="M4 4h16v16H4z" fill="none"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
+          action: () =>
+            (window.location.href = "mailto:support@smartgroceryplanner.app"),
+        },
+        {
+          title: "Live chat",
+          desc: "Chat with our team, avg. reply in 2 min",
+          bg: "var(--herb-light)",
+          fg: "var(--herb)",
+          icon: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+          action: () => alert("Would open live chat widget."),
+        },
+        {
+          title: "Phone support",
+          desc: "+91 1800-123-4567 (toll-free)",
+          bg: "var(--amber-light)",
+          fg: "var(--amber)",
+          icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
+          action: () => (window.location.href = "tel:+9118001234567"),
+        },
+      ];
+      document.getElementById("supportGrid").innerHTML = supportOptions
+        .map(
+          (s, i) => `
     <button class="support-card" onclick="supportOptions[${i}].action()">
       <div class="icon" style="background:${s.bg}; color:${s.fg};">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>
@@ -315,32 +791,70 @@
       <h3>${s.title}</h3>
       <p>${s.desc}</p>
     </button>
-  `).join('');
+  `,
+        )
+        .join("");
 
-  // ===================== Tutorials =====================
-  const tutorials = [
-    { title:"Video tutorials", desc:"Watch 2-5 min walkthroughs", emoji:"🎬", bg:"var(--coral-light)" },
-    { title:"Beginner guide", desc:"Everything to get started", emoji:"📘", bg:"var(--blue-light)" },
-    { title:"Advanced tips", desc:"Get the most out of predictions", emoji:"🚀", bg:"var(--plum-light)" },
-  ];
-  document.getElementById('tutGrid').innerHTML = tutorials.map(t => `
+      // ===================== Tutorials =====================
+      const tutorials = [
+        {
+          title: "Video tutorials",
+          desc: "Watch 2-5 min walkthroughs",
+          emoji: "🎬",
+          bg: "var(--coral-light)",
+        },
+        {
+          title: "Beginner guide",
+          desc: "Everything to get started",
+          emoji: "📘",
+          bg: "var(--blue-light)",
+        },
+        {
+          title: "Advanced tips",
+          desc: "Get the most out of predictions",
+          emoji: "🚀",
+          bg: "var(--plum-light)",
+        },
+      ];
+      document.getElementById("tutGrid").innerHTML = tutorials
+        .map(
+          (t) => `
     <div class="tut-card" onclick="alert('Would open: ${t.title}')">
       <div class="tut-thumb" style="background:${t.bg};">${t.emoji}</div>
       <h3>${t.title}</h3>
       <p>${t.desc}</p>
     </div>
-  `).join('');
+  `,
+        )
+        .join("");
 
-  // ===================== Contact card =====================
-  const contactInfo = [
-    { lbl:"Email", val:"support@smartgroceryplanner.app", bg:"var(--blue-light)", fg:"var(--blue)",
-      icon:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>' },
-    { lbl:"Phone", val:"+91 1800-123-4567", bg:"var(--amber-light)", fg:"var(--amber)",
-      icon:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>' },
-    { lbl:"Office", val:"Meerut, Uttar Pradesh, India", bg:"var(--herb-light)", fg:"var(--herb)",
-      icon:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>' },
-  ];
-  document.getElementById('contactList').innerHTML = contactInfo.map(c => `
+      // ===================== Contact card =====================
+      const contactInfo = [
+        {
+          lbl: "Email",
+          val: "support@smartgroceryplanner.app",
+          bg: "var(--blue-light)",
+          fg: "var(--blue)",
+          icon: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>',
+        },
+        {
+          lbl: "Phone",
+          val: "+91 1800-123-4567",
+          bg: "var(--amber-light)",
+          fg: "var(--amber)",
+          icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>',
+        },
+        {
+          lbl: "Office",
+          val: "Meerut, Uttar Pradesh, India",
+          bg: "var(--herb-light)",
+          fg: "var(--herb)",
+          icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+        },
+      ];
+      document.getElementById("contactList").innerHTML = contactInfo
+        .map(
+          (c) => `
     <div class="contact-row">
       <div class="contact-icon" style="background:${c.bg}; color:${c.fg};">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${c.icon}</svg>
@@ -350,32 +864,38 @@
         <div class="val">${c.val}</div>
       </div>
     </div>
-  `).join('');
+  `,
+        )
+        .join("");
 
-  // ===================== Feedback form =====================
-  document.getElementById('feedbackForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('fbName').value.trim();
-    const email = document.getElementById('fbEmail').value.trim();
-    const message = document.getElementById('fbMessage').value.trim();
+      // ===================== Feedback form =====================
+      document
+        .getElementById("feedbackForm")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("fbName").value.trim();
+          const email = document.getElementById("fbEmail").value.trim();
+          const message = document.getElementById("fbMessage").value.trim();
 
-    // TODO: replace with a real API call, e.g.
-    // await fetch('/api/feedback', { method:'POST', body: JSON.stringify({name,email,message}) });
-    console.log('Feedback submitted:', { name, email, message });
+          // TODO: replace with a real API call, e.g.
+          // await fetch('/api/feedback', { method:'POST', body: JSON.stringify({name,email,message}) });
+          console.log("Feedback submitted:", { name, email, message });
 
-    const successBanner = document.getElementById('formSuccess');
-    successBanner.classList.add('show');
-    e.target.reset();
-    setTimeout(() => successBanner.classList.remove('show'), 4000);
-  });
+          const successBanner = document.getElementById("formSuccess");
+          successBanner.classList.add("show");
+          e.target.reset();
+          setTimeout(() => successBanner.classList.remove("show"), 4000);
+        });
 
-  // ===================== Report a bug =====================
-  function reportBug(){
-    alert('Would open a bug report form pre-filled with your current page and browser info.');
-  }
+      // ===================== Report a bug =====================
+      function reportBug() {
+        alert(
+          "Would open a bug report form pre-filled with your current page and browser info.",
+        );
+      }
 
-  // ===================== Init =====================
-  renderFaqs();
-</script>
-</body>
+      // ===================== Init =====================
+      renderFaqs();
+    </script>
+  </body>
 </html>
