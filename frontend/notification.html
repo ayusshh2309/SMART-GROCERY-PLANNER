@@ -280,6 +280,55 @@
         border-radius: 12px;
       }
 
+      .app-shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 20px 48px;
+        display: grid;
+        grid-template-columns: minmax(220px, 260px) 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 24px;
+        align-self: start;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 20px 16px;
+      }
+
+      .sidebar-nav {
+        display: grid;
+        gap: 10px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        color: var(--ink);
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .nav-item.active {
+        background: rgba(47, 211, 106, 0.15);
+        color: var(--green);
+        border-color: rgba(47, 211, 106, 0.22);
+      }
+
       @media (max-width: 780px) {
         .notification-card {
           grid-template-columns: auto 1fr;
@@ -305,36 +354,104 @@
     </style>
   </head>
   <body>
-    <main class="page">
-      <header class="topbar">
-        <div class="title-block">
-          <h1>Notifications</h1>
-          <p>Stay on top of inventory, budgets, and meal ideas.</p>
-        </div>
-        <div class="toolbar">
-          <label class="search-box" for="searchInput">
-            <span>🔎</span>
-            <input
-              id="searchInput"
-              type="search"
-              placeholder="Search notifications"
-            />
-          </label>
-          <button id="clearAllBtn" class="btn btn-primary">Clear All</button>
-        </div>
-      </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <nav id="navList" class="sidebar-nav"></nav>
+      </aside>
+      <main class="page">
+        <header class="topbar">
+          <div class="title-block">
+            <h1>Notifications</h1>
+            <p>Stay on top of inventory, budgets, and meal ideas.</p>
+          </div>
+          <div class="toolbar">
+            <label class="search-box" for="searchInput">
+              <span>🔎</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search notifications"
+              />
+            </label>
+            <button id="clearAllBtn" class="btn btn-primary">Clear All</button>
+          </div>
+        </header>
 
-      <div class="filters" role="tablist" aria-label="Notification filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="unread">Unread</button>
-        <button class="filter-btn" data-filter="read">Read</button>
-        <button class="filter-btn" data-filter="important">Important</button>
-      </div>
+        <div class="filters" role="tablist" aria-label="Notification filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="unread">Unread</button>
+          <button class="filter-btn" data-filter="read">Read</button>
+          <button class="filter-btn" data-filter="important">Important</button>
+        </div>
 
-      <section id="notifications"></section>
-    </main>
+        <section id="notifications"></section>
+      </main>
+    </div>
 
     <script>
+      const navItems = [
+        {
+          label: "Dashboard",
+          href: "dashboard.html",
+          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+        },
+        {
+          label: "Pantry",
+          href: "pantry.html",
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+        },
+        {
+          label: "Shopping list",
+          href: "shooping_list.html",
+          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+        },
+        {
+          label: "Expenses",
+          href: "expenses.html",
+          icon: '<path d="M12 1v22"/><path d="M17 5H9.5A3.5 3.5 0 0 0 9.5 12H15a3.5 3.5 0 0 1 0 7H6"/>',
+        },
+        {
+          label: "Categories",
+          href: "categories.html",
+          icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+        },
+        {
+          label: "Analytics",
+          href: "analytics.html",
+          icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+        },
+        {
+          label: "Notifications",
+          href: "notification.html",
+          active: true,
+          icon: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+        },
+        {
+          label: "Profile",
+          href: "profile_page.html",
+          icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        },
+        {
+          label: "Settings",
+          href: "settings.html",
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+        },
+        {
+          label: "Help & Support",
+          href: "help_and_support.html",
+          icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+        },
+      ];
+      document.getElementById("navList").innerHTML = navItems
+        .map(
+          (n) => `
+    <a class="nav-item ${n.active ? "active" : ""}" href="${n.href}">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
+      ${n.label}
+    </a>`,
+        )
+        .join("");
+
       const notifications = [
         {
           id: 1,

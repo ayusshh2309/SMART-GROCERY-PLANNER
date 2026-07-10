@@ -392,284 +392,307 @@
     </div>
 
     <script>
-      // ===================== Nav =====================
-      const navItems = [
-        {
-          label: "Dashboard",
-          href: "dashboard.html",
-          icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-        },
-        {
-          label: "Pantry",
-          href: "pantry.html",
-          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0-2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
-        },
-        {
-          label: "Shopping list",
-          href: "shooping_list.html",
-          icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
-        },
-        {
-          label: "Expenses",
-          href: "expenses.html",
-          icon: '<path d="M12 1v22"/><path d="M17 5H9.5A3.5 3.5 0 0 0 9.5 12H15a3.5 3.5 0 0 1 0 7H6"/>',
-        },
-        {
-          label: "Recipes",
-          active: true,
-          href: "recipes.html",
-          icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
-        },
-      ];
-      document.getElementById("navList").innerHTML = navItems
-        .map(
-          (n) => `
-    <a class="nav-item ${n.active ? "active" : ""}" href="${n.href}">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
-      ${n.label}
-    </a>`,
-        )
-        .join("");
-
-      // ===================== Mock data =====================
-      const recipes = [
-        {
-          id: 1,
-          title: "Spinach & tomato shakshuka",
-          time: "25 min",
-          tag: "expiring",
-          color: "#E3F2E7",
-          emoji: "🍳",
-          ingredients: [
-            { name: "Tomatoes", have: true },
-            { name: "Spinach", have: true },
-            { name: "Eggs", have: true },
-            { name: "Onion", have: true },
-            { name: "Cumin", have: false },
-            { name: "Feta cheese", have: false },
-            { name: "Bread", have: true },
-          ],
-          steps: [
-            "Sauté onions until soft.",
-            "Add tomatoes and spinach, simmer 10 min.",
-            "Crack eggs into the sauce, cover and cook 6-8 min.",
-            "Top with feta and serve with bread.",
-          ],
-        },
-        {
-          id: 2,
-          title: "Paneer butter masala",
-          time: "35 min",
-          tag: "expiring",
-          color: "#FBEFDC",
-          emoji: "🍛",
-          ingredients: [
-            { name: "Paneer", have: true },
-            { name: "Tomatoes", have: true },
-            { name: "Butter", have: false },
-            { name: "Cream", have: false },
-            { name: "Garam masala", have: true },
-            { name: "Rice", have: true },
-          ],
-          steps: [
-            "Blend tomatoes into a smooth puree.",
-            "Cook puree with butter and spices 15 min.",
-            "Add paneer cubes and cream, simmer 5 min.",
-            "Serve hot with rice.",
-          ],
-        },
-        {
-          id: 3,
-          title: "Curd rice with tempering",
-          time: "15 min",
-          tag: "quick",
-          color: "#E7EDFA",
-          emoji: "🍚",
-          ingredients: [
-            { name: "Rice", have: true },
-            { name: "Yogurt", have: true },
-            { name: "Mustard seeds", have: false },
-            { name: "Curry leaves", have: false },
-            { name: "Green chili", have: false },
-          ],
-          steps: [
-            "Mash cooked rice with yogurt.",
-            "Temper mustard seeds and curry leaves in oil.",
-            "Mix tempering into the rice.",
-            "Serve chilled or at room temp.",
-          ],
-        },
-        {
-          id: 4,
-          title: "Dal tadka",
-          time: "30 min",
-          tag: "pantry",
-          color: "#FBEFDC",
-          emoji: "🥘",
-          ingredients: [
-            { name: "Toor dal", have: true },
-            { name: "Onion", have: true },
-            { name: "Tomatoes", have: true },
-            { name: "Garlic", have: false },
-            { name: "Cumin", have: false },
-          ],
-          steps: [
-            "Pressure-cook dal until soft.",
-            "Sauté onion, garlic, tomatoes.",
-            "Add dal and simmer 10 min.",
-            "Temper with cumin and serve.",
-          ],
-        },
-        {
-          id: 5,
-          title: "Vegetable fried rice",
-          time: "20 min",
-          tag: "quick",
-          color: "#E3F2E7",
-          emoji: "🍜",
-          ingredients: [
-            { name: "Rice", have: true },
-            { name: "Onion", have: true },
-            { name: "Bell peppers", have: false },
-            { name: "Soy sauce", have: false },
-            { name: "Eggs", have: true },
-          ],
-          steps: [
-            "Scramble eggs and set aside.",
-            "Stir-fry vegetables on high heat.",
-            "Add rice and soy sauce, toss well.",
-            "Fold in eggs and serve.",
-          ],
-        },
-        {
-          id: 6,
-          title: "French toast",
-          time: "10 min",
-          tag: "expiring",
-          color: "#FBE7E3",
-          emoji: "🍞",
-          ingredients: [
-            { name: "Bread", have: true },
-            { name: "Milk", have: true },
-            { name: "Eggs", have: true },
-            { name: "Cinnamon", have: false },
-            { name: "Honey", have: false },
-          ],
-          steps: [
-            "Whisk milk, eggs, and cinnamon.",
-            "Dip bread slices in the mixture.",
-            "Pan-fry until golden on both sides.",
-            "Drizzle with honey and serve.",
-          ],
-        },
-      ];
-
-      const filters = [
-        { key: "all", label: "All recipes" },
-        { key: "expiring", label: "Uses expiring items" },
-        { key: "quick", label: "Quick (under 20 min)" },
-        { key: "pantry", label: "Pantry staples" },
-      ];
-      let activeFilter = "all";
-
-      function matchPercent(r) {
-        const have = r.ingredients.filter((i) => i.have).length;
-        return Math.round((have / r.ingredients.length) * 100);
-      }
-      function matchClass(p) {
-        if (p >= 70) return "high";
-        if (p >= 40) return "mid";
-        return "low";
-      }
-
-      function renderFilters() {
-        document.getElementById("filterBar").innerHTML = filters
+        // ===================== Nav =====================
+        const navItems = [
+          {
+            label: "Dashboard",
+            href: "dashboard.html",
+            icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+          },
+          {
+            label: "Pantry",
+            href: "pantry.html",
+            icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
+          },
+          {
+            label: "Shopping list",
+            href: "shooping_list.html",
+            icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+          },
+          {
+            label: "Expenses",
+            href: "expenses.html",
+            icon: '<path d="M12 1v22"/><path d="M17 5H9.5A3.5 3.5 0 0 0 9.5 12H15a3.5 3.5 0 0 1 0 7H6"/>',
+          },
+          {
+            label: "Categories",
+            href: "categories.html",
+            icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+          },
+          {
+            label: "Analytics",
+            href: "analytics.html",
+            icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+          },
+          {
+            label: "Notifications",
+            href: "notification.html",
+            icon: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',
+          },
+          {
+            label: "Profile",
+            href: "profile_page.html",
+            icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+          },
+          {
+            label: "Settings",
+            href: "settings.html",
+            icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+          },
+          {
+            label: "Help & Support",
+            href: "help_and_support.html",
+            icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+          },
+        ];
+        document.getElementById("navList").innerHTML = navItems
           .map(
-            (f) =>
-              `<button class="chip ${f.key === activeFilter ? "active" : ""}" onclick="setFilter('${f.key}')">${f.label}</button>`,
+            (n) => `
+      <a class="nav-item ${n.active ? "active" : ""}" href="${n.href}">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${n.icon}</svg>
+        ${n.label}
+      </a>`,
           )
           .join("");
-      }
-      function setFilter(key) {
-        activeFilter = key;
-        renderGrid();
-      }
+// ===================== Mock data =====================
+        const recipes = [
+          {
+            id: 1,
+            title: "Spinach & tomato shakshuka",
+            time: "25 min",
+            tag: "expiring",
+            color: "#E3F2E7",
+            emoji: "🍳",
+            ingredients: [
+              { name: "Tomatoes", have: true },
+              { name: "Spinach", have: true },
+              { name: "Eggs", have: true },
+              { name: "Onion", have: true },
+              { name: "Cumin", have: false },
+              { name: "Feta cheese", have: false },
+              { name: "Bread", have: true },
+            ],
+            steps: [
+              "Sauté onions until soft.",
+              "Add tomatoes and spinach, simmer 10 min.",
+              "Crack eggs into the sauce, cover and cook 6-8 min.",
+              "Top with feta and serve with bread.",
+            ],
+          },
+          {
+            id: 2,
+            title: "Paneer butter masala",
+            time: "35 min",
+            tag: "expiring",
+            color: "#FBEFDC",
+            emoji: "🍛",
+            ingredients: [
+              { name: "Paneer", have: true },
+              { name: "Tomatoes", have: true },
+              { name: "Butter", have: false },
+              { name: "Cream", have: false },
+              { name: "Garam masala", have: true },
+              { name: "Rice", have: true },
+            ],
+            steps: [
+              "Blend tomatoes into a smooth puree.",
+              "Cook puree with butter and spices 15 min.",
+              "Add paneer cubes and cream, simmer 5 min.",
+              "Serve hot with rice.",
+            ],
+          },
+          {
+            id: 3,
+            title: "Curd rice with tempering",
+            time: "15 min",
+            tag: "quick",
+            color: "#E7EDFA",
+            emoji: "🍚",
+            ingredients: [
+              { name: "Rice", have: true },
+              { name: "Yogurt", have: true },
+              { name: "Mustard seeds", have: false },
+              { name: "Curry leaves", have: false },
+              { name: "Green chili", have: false },
+            ],
+            steps: [
+              "Mash cooked rice with yogurt.",
+              "Temper mustard seeds and curry leaves in oil.",
+              "Mix tempering into the rice.",
+              "Serve chilled or at room temp.",
+            ],
+          },
+          {
+            id: 4,
+            title: "Dal tadka",
+            time: "30 min",
+            tag: "pantry",
+            color: "#FBEFDC",
+            emoji: "🥘",
+            ingredients: [
+              { name: "Toor dal", have: true },
+              { name: "Onion", have: true },
+              { name: "Tomatoes", have: true },
+              { name: "Garlic", have: false },
+              { name: "Cumin", have: false },
+            ],
+            steps: [
+              "Pressure-cook dal until soft.",
+              "Sauté onion, garlic, tomatoes.",
+              "Add dal and simmer 10 min.",
+              "Temper with cumin and serve.",
+            ],
+          },
+          {
+            id: 5,
+            title: "Vegetable fried rice",
+            time: "20 min",
+            tag: "quick",
+            color: "#E3F2E7",
+            emoji: "🍜",
+            ingredients: [
+              { name: "Rice", have: true },
+              { name: "Onion", have: true },
+              { name: "Bell peppers", have: false },
+              { name: "Soy sauce", have: false },
+              { name: "Eggs", have: true },
+            ],
+            steps: [
+              "Scramble eggs and set aside.",
+              "Stir-fry vegetables on high heat.",
+              "Add rice and soy sauce, toss well.",
+              "Fold in eggs and serve.",
+            ],
+          },
+          {
+            id: 6,
+            title: "French toast",
+            time: "10 min",
+            tag: "expiring",
+            color: "#FBE7E3",
+            emoji: "🍞",
+            ingredients: [
+              { name: "Bread", have: true },
+              { name: "Milk", have: true },
+              { name: "Eggs", have: true },
+              { name: "Cinnamon", have: false },
+              { name: "Honey", have: false },
+            ],
+            steps: [
+              "Whisk milk, eggs, and cinnamon.",
+              "Dip bread slices in the mixture.",
+              "Pan-fry until golden on both sides.",
+              "Drizzle with honey and serve.",
+            ],
+          },
+        ];
 
-      function renderGrid() {
-        renderFilters();
-        let items = recipes;
-        if (activeFilter === "quick") {
-          items = items.filter((r) => parseInt(r.time) <= 20);
-        } else if (activeFilter !== "all") {
-          items = items.filter((r) => r.tag === activeFilter);
+        const filters = [
+          { key: "all", label: "All recipes" },
+          { key: "expiring", label: "Uses expiring items" },
+          { key: "quick", label: "Quick (under 20 min)" },
+          { key: "pantry", label: "Pantry staples" },
+        ];
+        let activeFilter = "all";
+
+        function matchPercent(r) {
+          const have = r.ingredients.filter((i) => i.have).length;
+          return Math.round((have / r.ingredients.length) * 100);
         }
-        items = [...items].sort((a, b) => matchPercent(b) - matchPercent(a));
+        function matchClass(p) {
+          if (p >= 70) return "high";
+          if (p >= 40) return "mid";
+          return "low";
+        }
 
-        document.getElementById("recipeGrid").innerHTML = items
-          .map((r) => {
-            const pct = matchPercent(r);
-            const cls = matchClass(pct);
-            return `
-      <div class="recipe-card" onclick="openRecipe(${r.id})">
-        <div class="recipe-thumb" style="background:${r.color};font-size:36px;">${r.emoji}</div>
-        <h3>${r.title}</h3>
-        <div class="match-row">
-          <span>${r.ingredients.filter((i) => i.have).length}/${r.ingredients.length} ingredients</span>
-          <span class="match-badge ${cls}">${pct}% match</span>
+        function renderFilters() {
+          document.getElementById("filterBar").innerHTML = filters
+            .map(
+              (f) =>
+                `<button class="chip ${f.key === activeFilter ? "active" : ""}" onclick="setFilter('${f.key}')">${f.label}</button>`,
+            )
+            .join("");
+        }
+        function setFilter(key) {
+          activeFilter = key;
+          renderGrid();
+        }
+
+        function renderGrid() {
+          renderFilters();
+          let items = recipes;
+          if (activeFilter === "quick") {
+            items = items.filter((r) => parseInt(r.time) <= 20);
+          } else if (activeFilter !== "all") {
+            items = items.filter((r) => r.tag === activeFilter);
+          }
+          items = [...items].sort((a, b) => matchPercent(b) - matchPercent(a));
+
+          document.getElementById("recipeGrid").innerHTML = items
+            .map((r) => {
+              const pct = matchPercent(r);
+              const cls = matchClass(pct);
+              return `
+        <div class="recipe-card" onclick="openRecipe(${r.id})">
+          <div class="recipe-thumb" style="background:${r.color};font-size:36px;">${r.emoji}</div>
+          <h3>${r.title}</h3>
+          <div class="match-row">
+            <span>${r.ingredients.filter((i) => i.have).length}/${r.ingredients.length} ingredients</span>
+            <span class="match-badge ${cls}">${pct}% match</span>
+          </div>
+          <div class="meta-row">
+            <span>⏱ ${r.time}</span>
+          </div>
+        </div>`;
+            })
+            .join("");
+        }
+
+        function openRecipe(id) {
+          const r = recipes.find((x) => x.id === id);
+          const pct = matchPercent(r);
+          const missing = r.ingredients.filter((i) => !i.have);
+          document.getElementById("modalContent").innerHTML = `
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h2>${r.title}</h2>
+        <div class="sub">⏱ ${r.time} · ${pct}% ingredients on hand</div>
+        <ul class="ing-list">
+          ${r.ingredients
+            .map(
+              (i) => `
+            <li>
+              <span class="ing-dot ${i.have ? "have" : "missing"}"></span>
+              ${i.name}
+              ${!i.have ? '<span class="missing-label">Missing</span>' : ""}
+            </li>`,
+            )
+            .join("")}
+        </ul>
+        <h3 style="font-size:14px;margin-bottom:8px;">Instructions</h3>
+        <ol class="steps">
+          ${r.steps.map((s) => `<li>${s}</li>`).join("")}
+        </ol>
+        <div class="cta-row">
+          <button class="btn-secondary" onclick="closeModal()">Close</button>
+          <button class="btn-primary" onclick="addMissingToList(${r.id})">Add ${missing.length} missing to list</button>
         </div>
-        <div class="meta-row">
-          <span>⏱ ${r.time}</span>
-        </div>
-      </div>`;
-          })
-          .join("");
-      }
+      `;
+          document.getElementById("modalBackdrop").classList.add("open");
+        }
+        function closeModal() {
+          document.getElementById("modalBackdrop").classList.remove("open");
+        }
+        function addMissingToList(id) {
+          alert("Would add missing ingredients to your Shopping List.");
+          closeModal();
+        }
+        document
+          .getElementById("modalBackdrop")
+          .addEventListener("click", (e) => {
+            if (e.target.id === "modalBackdrop") closeModal();
+          });
 
-      function openRecipe(id) {
-        const r = recipes.find((x) => x.id === id);
-        const pct = matchPercent(r);
-        const missing = r.ingredients.filter((i) => !i.have);
-        document.getElementById("modalContent").innerHTML = `
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <h2>${r.title}</h2>
-      <div class="sub">⏱ ${r.time} · ${pct}% ingredients on hand</div>
-      <ul class="ing-list">
-        ${r.ingredients
-          .map(
-            (i) => `
-          <li>
-            <span class="ing-dot ${i.have ? "have" : "missing"}"></span>
-            ${i.name}
-            ${!i.have ? '<span class="missing-label">Missing</span>' : ""}
-          </li>`,
-          )
-          .join("")}
-      </ul>
-      <h3 style="font-size:14px;margin-bottom:8px;">Instructions</h3>
-      <ol class="steps">
-        ${r.steps.map((s) => `<li>${s}</li>`).join("")}
-      </ol>
-      <div class="cta-row">
-        <button class="btn-secondary" onclick="closeModal()">Close</button>
-        <button class="btn-primary" onclick="addMissingToList(${r.id})">Add ${missing.length} missing to list</button>
-      </div>
-    `;
-        document.getElementById("modalBackdrop").classList.add("open");
-      }
-      function closeModal() {
-        document.getElementById("modalBackdrop").classList.remove("open");
-      }
-      function addMissingToList(id) {
-        alert("Would add missing ingredients to your Shopping List.");
-        closeModal();
-      }
-      document
-        .getElementById("modalBackdrop")
-        .addEventListener("click", (e) => {
-          if (e.target.id === "modalBackdrop") closeModal();
-        });
-
-      renderGrid();
+        renderGrid();
     </script>
   </body>
 </html>
