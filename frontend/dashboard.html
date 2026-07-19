@@ -27,7 +27,7 @@
         --plum: #7355b0;
         --plum-light: #efe8fa;
 
-        --radius: 14px;
+        --radius: 16px;
       }
 
       /* Dark theme overrides — applied when <html data-theme="dark"> */
@@ -109,24 +109,24 @@
 
       /* ---------------- Sidebar ---------------- */
       .sidebar {
-        width: 230px;
+        width: 268px;
         flex-shrink: 0;
         background: var(--sidebar);
         color: var(--sidebar-text);
         display: flex;
         flex-direction: column;
-        padding: 18px 14px;
+        padding: 24px 18px;
       }
       .brand {
         display: flex;
         align-items: center;
-        gap: 9px;
-        padding: 6px 6px 22px;
+        gap: 11px;
+        padding: 6px 6px 28px;
       }
       .brand .mark {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
         background: var(--herb);
         display: flex;
         align-items: center;
@@ -135,12 +135,12 @@
       }
       .brand .name {
         color: #fff;
-        font-size: 14px;
+        font-size: 16.5px;
         line-height: 1.25;
       }
       .brand .name span {
         display: block;
-        font-size: 11px;
+        font-size: 12.5px;
         color: var(--sidebar-text);
         font-weight: 400;
       }
@@ -148,15 +148,15 @@
       nav {
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 3px;
       }
       .nav-item {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 9px 10px;
-        border-radius: 9px;
-        font-size: 13.5px;
+        gap: 13px;
+        padding: 13px 14px;
+        border-radius: 12px;
+        font-size: 15.5px;
         font-weight: 500;
         color: var(--sidebar-text);
         border: none;
@@ -167,6 +167,8 @@
       .nav-item svg {
         flex-shrink: 0;
         opacity: 0.85;
+        width: 20px;
+        height: 20px;
       }
       .nav-item:hover {
         background: #1b2c22;
@@ -184,40 +186,40 @@
       .nav-divider {
         height: 1px;
         background: #22302a;
-        margin: 14px 4px;
+        margin: 18px 6px;
       }
 
       .upsell {
         margin-top: auto;
         background: #1b2c22;
         border: 1px solid #2a3f32;
-        border-radius: 12px;
-        padding: 14px;
+        border-radius: 14px;
+        padding: 18px;
         color: #fff;
       }
       .upsell .crown {
-        font-size: 12px;
+        font-size: 13.5px;
         font-weight: 600;
         color: #f0c75e;
         display: flex;
         align-items: center;
-        gap: 5px;
-        margin-bottom: 6px;
+        gap: 6px;
+        margin-bottom: 8px;
       }
       .upsell p {
-        font-size: 11.5px;
+        font-size: 12.5px;
         color: var(--sidebar-text);
-        margin: 0 0 10px;
-        line-height: 1.4;
+        margin: 0 0 12px;
+        line-height: 1.45;
       }
       .upsell button {
         width: 100%;
         background: var(--herb);
         color: #fff;
         border: none;
-        padding: 8px;
-        border-radius: 8px;
-        font-size: 12.5px;
+        padding: 10px;
+        border-radius: 9px;
+        font-size: 13.5px;
         font-weight: 600;
       }
 
@@ -225,46 +227,46 @@
       .main {
         flex: 1;
         min-width: 0;
-        padding: 22px 28px 50px;
+        padding: 32px 40px 60px;
       }
 
       .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 22px;
-        gap: 20px;
+        margin-bottom: 30px;
+        gap: 24px;
       }
       .topbar h1 {
-        font-size: 21px;
+        font-size: 29px;
       }
       .topbar .sub {
-        font-size: 13px;
+        font-size: 14.5px;
         color: var(--ink-soft);
-        margin-top: 2px;
+        margin-top: 4px;
       }
 
       .topbar-right {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 16px;
       }
       .search {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         background: var(--paper);
         border: 1px solid var(--line);
-        border-radius: 9px;
-        padding: 8px 12px;
-        width: 260px;
+        border-radius: 11px;
+        padding: 11px 16px;
+        width: 300px;
         color: var(--ink-soft);
-        font-size: 13px;
+        font-size: 14.5px;
       }
       .search input {
         border: none;
         outline: none;
-        font-size: 13px;
+        font-size: 14.5px;
         flex: 1;
         background: none;
         color: var(--ink);
@@ -272,8 +274,8 @@
       }
 
       .icon-btn-round {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         background: var(--paper);
         border: 1px solid var(--line);
@@ -284,16 +286,20 @@
         position: relative;
         flex-shrink: 0;
       }
+      .icon-btn-round svg {
+        width: 19px;
+        height: 19px;
+      }
       .badge {
         position: absolute;
-        top: -3px;
-        right: -3px;
+        top: -4px;
+        right: -4px;
         background: var(--coral);
         color: #fff;
-        font-size: 9px;
+        font-size: 10px;
         font-weight: 700;
-        width: 16px;
-        height: 16px;
+        width: 19px;
+        height: 19px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -302,12 +308,12 @@
       .profile {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         cursor: pointer;
       }
       .profile .av {
-        width: 34px;
-        height: 34px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         background: var(--herb-light);
         color: var(--herb);
@@ -315,10 +321,10 @@
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 13px;
+        font-size: 15px;
       }
       .profile .nm {
-        font-size: 13px;
+        font-size: 14.5px;
         font-weight: 600;
         white-space: nowrap;
       }
@@ -327,38 +333,42 @@
       .stats {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 14px;
-        margin-bottom: 20px;
+        gap: 18px;
+        margin-bottom: 26px;
       }
       .stat-card {
         background: var(--paper);
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        padding: 16px;
+        padding: 22px;
       }
       .stat-card .icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 10px;
+        margin-bottom: 14px;
+      }
+      .stat-card .icon svg {
+        width: 21px;
+        height: 21px;
       }
       .stat-card .num {
-        font-size: 21px;
+        font-size: 28px;
         display: block;
       }
       .stat-card .label {
-        font-size: 12px;
+        font-size: 13.5px;
         color: var(--ink-soft);
-        margin-top: 2px;
+        margin-top: 4px;
         display: block;
       }
       .stat-card .trend {
-        font-size: 11px;
+        font-size: 12.5px;
         font-weight: 600;
-        margin-top: 8px;
+        margin-top: 10px;
         display: block;
       }
       .trend.up {
@@ -378,35 +388,35 @@
       .charts {
         display: grid;
         grid-template-columns: 1.5fr 1fr;
-        gap: 16px;
-        margin-bottom: 20px;
+        gap: 20px;
+        margin-bottom: 26px;
       }
       .panel {
         background: var(--paper);
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        padding: 18px;
+        padding: 24px;
       }
       .panel-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 14px;
+        margin-bottom: 18px;
       }
       .panel-head h2 {
-        font-size: 15px;
+        font-size: 18px;
       }
       .panel-head .select {
-        font-size: 12px;
+        font-size: 13.5px;
         color: var(--ink-soft);
         border: 1px solid var(--line);
-        border-radius: 7px;
-        padding: 5px 9px;
+        border-radius: 8px;
+        padding: 7px 12px;
         background: var(--paper);
       }
       .panel-head a,
       .view-all {
-        font-size: 12px;
+        font-size: 13.5px;
         font-weight: 600;
         color: var(--herb);
         text-decoration: none;
@@ -415,17 +425,17 @@
       }
 
       .chart-wrap {
-        height: 230px;
+        height: 280px;
         position: relative;
       }
       .donut-wrap {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 22px;
       }
       .donut-canvas-box {
-        width: 150px;
-        height: 150px;
+        width: 210px;
+        height: 210px;
         flex-shrink: 0;
         position: relative;
       }
@@ -433,22 +443,22 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 9px;
+        gap: 12px;
       }
       .legend-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 12.5px;
+        font-size: 14px;
       }
       .legend-left {
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 9px;
       }
       .dot {
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         flex-shrink: 0;
       }
@@ -462,13 +472,13 @@
       .lists {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 16px;
+        gap: 20px;
       }
       .list-row {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 9px 0;
+        gap: 13px;
+        padding: 12px 0;
         border-bottom: 1px solid var(--line);
       }
       .list-row:last-child {
@@ -476,32 +486,36 @@
         padding-bottom: 0;
       }
       .thumb {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+      }
+      .thumb svg {
+        width: 26px;
+        height: 26px;
       }
       .list-info {
         flex: 1;
         min-width: 0;
       }
       .list-info .nm {
-        font-size: 13px;
+        font-size: 14.5px;
         font-weight: 600;
       }
       .list-info .sub {
-        font-size: 11.5px;
+        font-size: 12.5px;
         color: var(--ink-soft);
-        margin-top: 1px;
+        margin-top: 2px;
       }
       .tag {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
-        padding: 3px 8px;
-        border-radius: 6px;
+        padding: 4px 10px;
+        border-radius: 7px;
         white-space: nowrap;
       }
       .tag.danger {
@@ -516,8 +530,8 @@
       .activity-row {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
-        padding: 9px 0;
+        gap: 13px;
+        padding: 12px 0;
         border-bottom: 1px solid var(--line);
       }
       .activity-row:last-child {
@@ -525,8 +539,8 @@
         padding-bottom: 0;
       }
       .act-icon {
-        width: 30px;
-        height: 30px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -534,17 +548,21 @@
         flex-shrink: 0;
         margin-top: 1px;
       }
+      .act-icon svg {
+        width: 17px;
+        height: 17px;
+      }
       .act-info .tx {
-        font-size: 12.5px;
-        line-height: 1.4;
+        font-size: 14px;
+        line-height: 1.45;
       }
       .act-info .ts {
-        font-size: 11px;
+        font-size: 12.5px;
         color: var(--ink-soft);
-        margin-top: 2px;
+        margin-top: 3px;
       }
 
-      @media (max-width: 1100px) {
+      @media (max-width: 1300px) {
         .stats {
           grid-template-columns: repeat(3, 1fr);
         }
@@ -553,6 +571,14 @@
         }
         .lists {
           grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
         }
       }
     </style>
@@ -564,8 +590,8 @@
         <div class="brand">
           <div class="mark">
             <svg
-              width="18"
-              height="18"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#fff"
@@ -586,8 +612,8 @@
         <div class="upsell">
           <div class="crown">
             <svg
-              width="14"
-              height="14"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="#F0C75E"
               stroke="none"
@@ -615,8 +641,8 @@
           <div class="topbar-right">
             <div class="search">
               <svg
-                width="15"
-                height="15"
+                width="17"
+                height="17"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -637,8 +663,6 @@
             >
               <svg
                 id="themeIcon"
-                width="16"
-                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -659,8 +683,6 @@
             </div>
             <div class="icon-btn-round" title="Notifications">
               <svg
-                width="16"
-                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -677,8 +699,8 @@
               <div class="av" id="profileAvatar">AK</div>
               <div class="nm" id="profileName">Ayush Kumar</div>
               <svg
-                width="13"
-                height="13"
+                width="15"
+                height="15"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -965,7 +987,7 @@
       // ===================== Render: sidebar nav =====================
       function navHTML(item) {
         return `<button class="nav-item ${item.active ? "active" : ""}" onclick="window.location.href='${item.href}'">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${item.icon}</svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${item.icon}</svg>
       ${item.label}
     </button>`;
       }
@@ -980,7 +1002,7 @@
           (s) => `
     <div class="stat-card">
       <div class="icon" style="background:${s.bg}; color:${s.fg};">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${s.icon}</svg>
       </div>
       <span class="num mono">${s.num}</span>
       <span class="label">${s.label}</span>
@@ -1067,7 +1089,7 @@
           return `
     <div class="list-row">
       <div class="thumb" style="background:${c.bg};">
-        <svg width="22" height="22" viewBox="0 0 24 24">${c.svg}</svg>
+        <svg viewBox="0 0 24 24">${c.svg}</svg>
       </div>
       <div class="list-info"><div class="nm">${i.name}</div><div class="sub">${i.qty}</div></div>
       <span class="tag ${tagCls}">${dayLabel}</span>
@@ -1082,7 +1104,7 @@
           return `
     <div class="list-row">
       <div class="thumb" style="background:${c.bg};">
-        <svg width="22" height="22" viewBox="0 0 24 24">${c.svg}</svg>
+        <svg viewBox="0 0 24 24">${c.svg}</svg>
       </div>
       <div class="list-info"><div class="nm">${i.name}</div><div class="sub">${i.qty}</div></div>
       <span class="tag danger">Low</span>
@@ -1124,7 +1146,7 @@
           return `
     <div class="activity-row">
       <div class="act-icon" style="background:${c.bg}; color:${c.fg};">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg>
       </div>
       <div class="act-info"><div class="tx">${a.tx}</div><div class="ts">${a.ts}</div></div>
     </div>`;
@@ -1144,18 +1166,26 @@
         .join("");
 
       // ===================== Line chart (pure inline SVG, no library) =====================
-      (function renderLineChart() {
+      function renderLineChart() {
         const W = 600,
-          H = 190,
-          padTop = 14,
-          padBottom = 26,
-          padX = 10;
+          H = 240,
+          padTop = 20,
+          padBottom = 32,
+          padLeft = 46,
+          padRight = 12;
         const values = monthlyExpense.map((d) => d.v);
         const niceMax = Math.ceil(Math.max(...values) / 1000) * 1000;
         const plotH = H - padTop - padBottom;
-        const stepX = (W - padX * 2) / (monthlyExpense.length - 1);
+        const plotW = W - padLeft - padRight;
+        const stepX = plotW / (monthlyExpense.length - 1);
 
-        const x = (i) => padX + i * stepX;
+        // Read the current theme's actual colors instead of hardcoding
+        // light-theme hex values, so gridlines/text stay subtle in dark mode too.
+        const cs = getComputedStyle(document.documentElement);
+        const lineColor = cs.getPropertyValue("--line").trim() || "#E4E9E0";
+        const softColor = cs.getPropertyValue("--ink-soft").trim() || "#677065";
+
+        const x = (i) => padLeft + i * stepX;
         const y = (v) => padTop + plotH - (v / niceMax) * plotH;
 
         const points = monthlyExpense.map((d, i) => ({
@@ -1174,28 +1204,29 @@
           linePath +
           ` L${points[points.length - 1].x.toFixed(1)},${(padTop + plotH).toFixed(1)} L${points[0].x.toFixed(1)},${(padTop + plotH).toFixed(1)} Z`;
 
-        const ticks = [0, 0.25, 0.5, 0.75, 1].map((f) =>
-          Math.round(niceMax * f),
+        // 4 evenly spaced ticks (0 to max) — fewer, cleaner lines instead of a busy grid
+        const ticks = [0, 1 / 3, 2 / 3, 1].map(
+          (f) => Math.round((niceMax * f) / 50) * 50,
         );
         const gridLines = ticks
           .map((t) => {
             const gy = y(t);
-            return `<line x1="${padX}" y1="${gy}" x2="${W - padX}" y2="${gy}" stroke="#E4E9E0" stroke-width="1"/>
-              <text x="2" y="${gy + 3}" font-size="10" fill="#677065">₹${t / 1000}k</text>`;
+            return `<line x1="${padLeft}" y1="${gy}" x2="${W - padRight}" y2="${gy}" stroke="${lineColor}" stroke-width="1" stroke-dasharray="3 4" opacity="0.6"/>
+              <text x="${padLeft - 10}" y="${gy + 4}" font-size="11.5" fill="${softColor}" text-anchor="end">₹${(t / 1000).toFixed(t % 1000 === 0 ? 0 : 2)}k</text>`;
           })
           .join("");
 
         const dots = points
           .map(
             (p) =>
-              `<circle cx="${p.x}" cy="${p.y}" r="4" fill="#2F7D4F" stroke="#fff" stroke-width="2"><title>${p.m}: ₹${p.v.toLocaleString("en-IN")}</title></circle>`,
+              `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#2F7D4F" stroke="var(--paper)" stroke-width="2.5"><title>${p.m}: ₹${p.v.toLocaleString("en-IN")}</title></circle>`,
           )
           .join("");
 
         const labels = points
           .map(
             (p) =>
-              `<text x="${p.x}" y="${H - 6}" font-size="11" fill="#677065" text-anchor="middle">${p.m}</text>`,
+              `<text x="${p.x}" y="${H - 8}" font-size="12.5" fill="${softColor}" text-anchor="middle">${p.m}</text>`,
           )
           .join("");
 
@@ -1203,20 +1234,21 @@
       <svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" preserveAspectRatio="none" style="overflow:visible">
         <defs>
           <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#2F7D4F" stop-opacity="0.25"/>
-            <stop offset="100%" stop-color="#2F7D4F" stop-opacity="0"/>
+            <stop offset="0%" stop-color="#3FAE68" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#3FAE68" stop-opacity="0"/>
           </linearGradient>
         </defs>
         ${gridLines}
         <path d="${areaPath}" fill="url(#lineGrad)" stroke="none"/>
-        <path d="${linePath}" fill="none" stroke="#2F7D4F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="${linePath}" fill="none" stroke="#3FAE68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
         ${dots}
         ${labels}
       </svg>`;
-      })();
+      }
+      renderLineChart();
 
       // ===================== Pie chart (pure CSS conic-gradient, no library) =====================
-      (function renderPieChart() {
+      function renderPieChart() {
         const total = categorySpend.reduce((s, c) => s + c.amt, 0);
         let cursor = 0;
         const stops = categorySpend
@@ -1230,10 +1262,20 @@
 
         document.getElementById("pieChart").innerHTML = `
       <div role="img" aria-label="Pie chart of category-wise expense"
-           style="width:150px;height:150px;border-radius:50%;
+           style="width:210px;height:210px;border-radius:50%;
                   background:conic-gradient(${stops});
-                  box-shadow:0 0 0 2px #fff inset;"></div>`;
-      })();
+                  box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--line);"></div>`;
+      }
+      renderPieChart();
+
+      // Re-render both charts when the theme changes, since their colors
+      // are read from CSS variables at render time, not live-bound.
+      const _origApplyTheme = applyTheme;
+      applyTheme = function (theme) {
+        _origApplyTheme(theme);
+        if (document.getElementById("lineChart")) renderLineChart();
+        if (document.getElementById("pieChart")) renderPieChart();
+      };
     </script>
   </body>
 </html>
